@@ -22,6 +22,7 @@ import { createSelectTileSystem } from '../systems/selectTileSystem'
 import { createSpriteSystem } from '../systems/spriteSystem'
 import { createTintSystem } from '../systems/tintSystem'
 import { Path } from '../types/Path'
+import { createTutorialTextSystem } from '../systems/tutorialTextSystem'
 
 
 export default class EcsScene extends Phaser.Scene {
@@ -36,6 +37,7 @@ export default class EcsScene extends Phaser.Scene {
     private neighborSystem?: System
     // private riverSystem?: System
     private selectTileSystem?: System
+    private tutorialTextSystem?: System
     spriteById: Map<number, Phaser.GameObjects.Sprite>
     availableTiles: Map<number, Map<number, Path>>
     tiles: Map<string, number>
@@ -114,30 +116,7 @@ export default class EcsScene extends Phaser.Scene {
 
         this.selectTileSystem = createSelectTileSystem(this, this.spriteById, this.availableTiles)
 
-        /* eslint-disable @typescript-eslint/no-unused-vars */
-        let zoomedIn = true
-        this.input.on('wheel',
-            (
-                pointer: Phaser.Input.Pointer,
-                gameObjects: Phaser.GameObjects.GameObject[],
-                deltaX: number,
-                deltaY: number,
-                deltaZ: number
-            ) => {
-
-                if (deltaY > 0 && zoomedIn) {
-                    this.cameras.main.setZoom(0.5)
-                    zoomedIn = false
-                }
-
-                if (deltaY < 0 && !zoomedIn) {
-                    this.cameras.main.setZoom(1)
-                    this.cameras.main.centerOn(pointer.worldX, pointer.worldY)
-                    zoomedIn = true
-                }
-            }
-        )
-        /* eslint-enable @typescript-eslint/no-unused-vars */
+        this.tutorialTextSystem = createTutorialTextSystem(this)
     }
 
     update(
@@ -159,6 +138,7 @@ export default class EcsScene extends Phaser.Scene {
         this.availableTileSystem?.(this.world)
         this.doubleClickSystem?.(this.world)
         this.selectTileSystem?.(this.world)
+        this.tutorialTextSystem?.(this.world)
         this.tintSystem?.(this.world)
         this.movementSystem?.(this.world)
     }
