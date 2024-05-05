@@ -17,7 +17,6 @@ import { createCameraSystem } from '../systems/cameraSystem'
 import { createMovementSystem } from '../systems/movementSystem'
 import { createNoiseSystem } from '../systems/noiseSystem'
 import { createSelectActorSystem } from '../systems/selectActorSystem'
-import { createSelectMenuSystem } from '../systems/selectMenuSystem'
 import { createSelectTileSystem } from '../systems/selectTileSystem'
 // import { createRiverSystem } from '../systems/riverSystem'
 import { createSpriteSystem } from '../systems/spriteSystem'
@@ -37,7 +36,6 @@ export default class EcsScene extends Phaser.Scene {
     private neighborSystem?: System
     // private riverSystem?: System
     private selectTileSystem?: System
-    private selectMenuSystem?: System
     spriteById: Map<number, Phaser.GameObjects.Sprite>
     availableTiles: Map<number, Map<number, Path>>
     tiles: Map<string, number>
@@ -116,8 +114,6 @@ export default class EcsScene extends Phaser.Scene {
 
         this.selectTileSystem = createSelectTileSystem(this, this.spriteById, this.availableTiles)
 
-        this.selectMenuSystem = createSelectMenuSystem(this)
-
         /* eslint-disable @typescript-eslint/no-unused-vars */
         let zoomedIn = true
         this.input.on('wheel',
@@ -162,7 +158,6 @@ export default class EcsScene extends Phaser.Scene {
         this.spriteSystem?.(this.world)
         this.availableTileSystem?.(this.world)
         this.doubleClickSystem?.(this.world)
-        this.selectMenuSystem?.(this.world)
         this.selectTileSystem?.(this.world)
         this.tintSystem?.(this.world)
         this.movementSystem?.(this.world)

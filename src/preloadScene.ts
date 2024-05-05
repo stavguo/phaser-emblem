@@ -11,8 +11,6 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet('badChar', 'assets/img/badChar.png', { frameWidth: 16, frameHeight: 16 })
         //this.load.glsl('bundle', 'assets/plasma-bundle.glsl.js');
         this.load.glsl('ocean', 'assets/ocean.frag')
-
-        this.load.html('selectMenu', 'assets/html/selectMenu.html')
     }
 
     create() {
