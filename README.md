@@ -1,6 +1,6 @@
-# [Phaser-Emblem](https://dmellogu.github.io/ftrpg/)
+# [Phaser-Emblem](https://stavguo.github.io/phaser-emblem/)
 
-A Phaser3 demo inspired by Fire-Emblem's grid-based movement. There is a lot of progress to be made, but I'll do my best to keep the deployment "playable." It can be played [here](https://dmellogu.github.io/ftrpg/).
+A Phaser3 demo inspired by Fire-Emblem's grid-based movement. There is a lot of progress to be made, but I'll do my best to keep the deployment "playable." It can be played [here](https://stavguo.github.io/phaser-emblem/).
 
 
 ## How to Play
