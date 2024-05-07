@@ -85,7 +85,7 @@ To run the demo locally, you must [install node](https://nodejs.org/en/download)
 
 ## Controls
 
-* To pan around, click and drag anywhere on the scene.
+* To move around, click and drag anywhere on the scene.
 * To view the tinted spaces a unit can move to, <strong>double-click</strong> the unit.
 * To move a unit, <strong>double-click</strong> a tinted space.
 * To undo the selection of a unit, <strong>double-click</strong> the unit again.
