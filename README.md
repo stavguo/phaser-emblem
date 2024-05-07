@@ -1,9 +1,6 @@
 <a name="readme-top"></a>
 
-<h1 style="text-align: center;">
-  Phaser-Emblem<br>⚔️<br>
-  <a href="https://stavguo.github.io/phaser-emblem/">Demo</a>
-</h1>
+# Phaser-Emblem ⚔️ [Demo](https://stavguo.github.io/phaser-emblem/)
 
 <details>
   <summary>Table of Contents</summary>
