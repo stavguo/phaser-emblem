@@ -40,7 +40,7 @@ In my implementation, a unit can spend up to five movement points per turn. My p
 * a forest space costs three movement
 * a water space is impassable<br>
 
-For my custom pathfinding algorithm, I adapted the [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) to traverse over terrain with variable movement costs. A* is an informed search algorithm that finds the shortest path in terms of cost (least distance travelled, shortest time, etc.) given the start and end node of a weighted graph. It does this by maintaining a tree of paths originating at the start node and extending those paths one edge at a time until the goal node is reached.
+For my custom pathfinding algorithm, I adapted the [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) to traverse over terrain with variable movement costs. A* is an informed search algorithm that finds the shortest path in terms of cost (least distance traveled, shortest time, etc.) given the start and end node of a weighted graph. It does this by maintaining a tree of paths originating at the start node and extending those paths one edge at a time until the goal node is reached.
 
 ![Astar Progress Animation](https://upload.wikimedia.org/wikipedia/commons/5/5d/Astar_progress_animation.gif)
 
