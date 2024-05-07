@@ -13,7 +13,6 @@ const selectExitQuery = exitQuery(selectQuery)
 const normalText = 'To move around the scene, click and drag anywhere.\nTo select a unit, DOUBLE-CLICK them.\n'
 const selectText = 'To move a unit, DOUBLE-CLICK a tinted space.\nTo undo the selection of a unit, DOUBLE-CLICK the unit again.\n'
 export const createTutorialTextSystem = (scene: Phaser.Scene) => {
-    console.log('we out hereeee')
     let text = scene.add.text(
         scene.cameras.main.centerX,
         scene.cameras.main.centerY / 4,
