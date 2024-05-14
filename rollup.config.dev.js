@@ -1,14 +1,14 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
-import serve from 'rollup-plugin-serve';
-import typescript from 'rollup-plugin-typescript2';
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
+import serve from 'rollup-plugin-serve'
+import typescript from 'rollup-plugin-typescript2'
 
 export default {
 
     //  Our games entry point (edit as required)
     input: [
-        './src/game.ts'
+        './src/game.ts',
     ],
 
     //  Where the build file is to be generated.
@@ -20,7 +20,7 @@ export default {
         name: 'MyGame',
         format: 'iife',
         sourcemap: false,
-        intro: 'var global = window;'
+        intro: 'var global = window;',
     },
 
     plugins: [
@@ -34,32 +34,32 @@ export default {
                 'typeof EXPERIMENTAL': JSON.stringify(true),
                 'typeof PLUGIN_CAMERA3D': JSON.stringify(false),
                 'typeof PLUGIN_FBINSTANT': JSON.stringify(false),
-                'typeof FEATURE_SOUND': JSON.stringify(true)
-            }
+                'typeof FEATURE_SOUND': JSON.stringify(true),
+            },
         }),
 
         //  Parse our .ts source files
         resolve({
-            extensions: [ '.ts', '.tsx' ]
+            extensions: ['.ts', '.tsx'],
         }),
 
         //  We need to convert the Phaser 3 CJS modules into a format Rollup can use:
         commonjs({
             include: [
                 'node_modules/eventemitter3/**',
-                'node_modules/phaser/**'
+                'node_modules/phaser/**',
             ],
-            exclude: [ 
-                'node_modules/phaser/src/polyfills/requestAnimationFrame.js'
+            exclude: [
+                'node_modules/phaser/src/polyfills/requestAnimationFrame.js',
             ],
             sourceMap: true,
-            ignoreGlobal: true
+            ignoreGlobal: true,
         }),
 
         //  See https://www.npmjs.com/package/rollup-plugin-typescript2 for config options
         typescript({
             tsconfig: 'tsconfig.json',
-            sourceMap: true
+            sourceMap: true,
         }),
 
         //  See https://www.npmjs.com/package/rollup-plugin-serve for config options
@@ -69,9 +69,9 @@ export default {
             host: 'localhost',
             port: 10001,
             headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        })
+                'Access-Control-Allow-Origin': '*',
+            },
+        }),
 
-    ]
-};
+    ],
+}
