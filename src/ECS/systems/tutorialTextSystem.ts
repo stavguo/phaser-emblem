@@ -10,7 +10,7 @@ import { Selected } from '../components/actor/selected'
 const selectQuery = defineQuery([Selected])
 const selectEnterQuery = enterQuery(selectQuery)
 const selectExitQuery = exitQuery(selectQuery)
-const normalText = 'To move around the scene, click and drag anywhere.\nTo select a unit, DOUBLE-CLICK them.\n'
+const normalText = 'To move around, click and drag anywhere on the scene.\nTo view the tinted spaces a unit can move to, DOUBLE-CLICK the unit.\n'
 const selectText = 'To move a unit, DOUBLE-CLICK a tinted space.\nTo undo the selection of a unit, DOUBLE-CLICK the unit again.\n'
 export const createTutorialTextSystem = (scene: Phaser.Scene) => {
     let text = scene.add.text(
