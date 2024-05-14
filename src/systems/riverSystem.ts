@@ -1,7 +1,7 @@
 import {
     defineQuery,
     defineSystem,
-    enterQuery
+    enterQuery,
 } from 'bitecs'
 import { Cell } from '../components/base/cell'
 import { Frame } from '../components/base/frame'
@@ -17,9 +17,9 @@ const highestTiles: number[] = []
 const randomRiverMax = 4 // non-inclusive
 
 export const createRiverSystem = (tiles: Map<string, number>) => {
-    return defineSystem(world => {
+    return defineSystem((world) => {
         const enterEntities = noiseEnterQuery(world)
-        for (let i = 0; i < enterEntities.length; ++ i) {
+        for (let i = 0; i < enterEntities.length; ++i) {
             const tileId = enterEntities[i]
             const noise = Noise.value[tileId]
             if (noise > NoiseEnum.Forest) {

@@ -4,7 +4,7 @@ import {
     defineQuery,
     defineSystem,
     enterQuery,
-    IWorld
+    IWorld,
 } from 'bitecs'
 import { Actor, ActorStateEnum, ActorTypeEnum } from '../components/actor/actor'
 import { CurrentTile } from '../components/actor/currentTile'
@@ -75,9 +75,9 @@ function addActors(world: IWorld) {
 }
 
 export const createNoiseSystem = () => {
-    return defineSystem(world => {
+    return defineSystem((world) => {
         const enterEntities = noiseEnterQuery(world)
-        for (let i = 0; i < enterEntities.length; ++ i) {
+        for (let i = 0; i < enterEntities.length; ++i) {
             const tileId = enterEntities[i]
             const noise = Noise.value[tileId]
             addComponent(world, Frame, tileId)
@@ -94,10 +94,12 @@ export const createNoiseSystem = () => {
                 Frame.frame[tileId] = 2
                 Terrain.cost[tileId] = 1
                 plainTileIds.push(tileId)
-            } else if (noise < 0.7) {
+            }
+            else if (noise < 0.7) {
                 Frame.frame[tileId] = 3
                 Terrain.cost[tileId] = 2
-            } else if (noise < 1) {
+            }
+            else if (noise < 1) {
                 Frame.frame[tileId] = 4
                 Terrain.cost[tileId] = 3
             }

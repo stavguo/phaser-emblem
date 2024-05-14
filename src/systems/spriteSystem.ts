@@ -2,7 +2,7 @@ import * as Phaser from 'phaser'
 import {
     defineQuery,
     defineSystem,
-    enterQuery
+    enterQuery,
 } from 'bitecs'
 import { Cell } from '../components/base/cell'
 import { Sprite } from '../components/base/sprite'
@@ -15,9 +15,9 @@ export const createSpriteSystem = (scene: Phaser.Scene, textures: string[], spri
     const tileQuery = defineQuery([Tile])
     const actorQueryEnter = enterQuery(actorQuery)
     const tileQueryEnter = enterQuery(tileQuery)
-    return defineSystem(world => {
+    return defineSystem((world) => {
         const tileEntities = tileQueryEnter(world)
-        for (let i = 0; i < tileEntities.length; ++ i) {
+        for (let i = 0; i < tileEntities.length; ++i) {
             const id = tileEntities[i]
             const row = Cell.row[id]
             const col = Cell.col[id]
@@ -26,14 +26,14 @@ export const createSpriteSystem = (scene: Phaser.Scene, textures: string[], spri
             const frame = Frame.frame[id]
             spriteById.set(
                 id,
-                scene.add.sprite(col * 64,row * 64,texture, frame)
+                scene.add.sprite(col * 64, row * 64, texture, frame)
                     .setOrigin(0)
                     .setScale(4)
-                    .setInteractive()
+                    .setInteractive(),
             )
         }
         const actorEntities = actorQueryEnter(world)
-        for (let i = 0; i < actorEntities.length; ++ i) {
+        for (let i = 0; i < actorEntities.length; ++i) {
             const id = actorEntities[i]
             const row = Cell.row[id]
             const col = Cell.col[id]
@@ -42,10 +42,10 @@ export const createSpriteSystem = (scene: Phaser.Scene, textures: string[], spri
             const frame = Frame.frame[id]
             spriteById.set(
                 id,
-                scene.add.sprite(col * 64,row * 64,texture, frame)
+                scene.add.sprite(col * 64, row * 64, texture, frame)
                     .setOrigin(0)
                     .setScale(4)
-                    .setInteractive()
+                    .setInteractive(),
             )
         }
         return world

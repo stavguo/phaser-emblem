@@ -5,7 +5,6 @@ import { Tint, TintEnum } from '../components/tile/tint'
 import { Node } from '../components/tile/node'
 import { satisfiesBounds } from './satisfiesBounds'
 
-
 function manhattanDistance(x: number, y: number) {
     return Math.abs(Cell.col[x] - Cell.col[y]) + Math.abs(Cell.row[x] - Cell.row[y])
 }
@@ -24,7 +23,7 @@ export function aStar(
     startId: number,
     targetId: number,
     world: IWorld,
-    tiles: Map<string, number>
+    tiles: Map<string, number>,
 ) {
     // OPEN - the set of nodes to be evaluated
     const open: number[] = []
@@ -41,7 +40,6 @@ export function aStar(
 
     // loop
     while (open.length > 0) {
-
         // current = node in open with the lowest f_cost
         open.sort(compareF)
 
@@ -102,7 +100,7 @@ export function aStar(
 
             // if new path to neighbor is shorter or neighbor is not in OPEN
             const newCost = Node.gCost[current] + Terrain.cost[neighbor]
-            //const newCost = Node.gCost[current] + (Noise.value[neighbor] * 10)
+            // const newCost = Node.gCost[current] + (Noise.value[neighbor] * 10)
             const oldCost = (Node.gCost[neighbor]) ? Node.gCost[neighbor] : 0
 
             const neighborNotInOpen = !open.find(el => el === neighbor)

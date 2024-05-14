@@ -1,5 +1,5 @@
 import {
-    defineComponent
+    defineComponent,
 } from 'bitecs'
 
 // Compoonent for tagging player actors.

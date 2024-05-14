@@ -3,7 +3,7 @@ import {
     defineQuery,
     defineSystem,
     IWorld,
-    removeComponent
+    removeComponent,
 } from 'bitecs'
 import { Step } from '../components/tile/step'
 import { CurrentTile } from '../components/actor/currentTile'
@@ -16,7 +16,7 @@ function resetTile(
     sprite: Phaser.GameObjects.Sprite,
     actorId: number,
     tileId: number,
-    world: IWorld
+    world: IWorld,
 ) {
     Cell.col[actorId] = Cell.row[tileId]
     sprite.x = Cell.col[tileId] * 64
@@ -30,9 +30,9 @@ function resetTile(
 }
 
 export const createMovementSystem = (spriteById: Map<number, Phaser.GameObjects.Sprite>) => {
-    return defineSystem(world => {
+    return defineSystem((world) => {
         const stepEntities = stepQuery(world)
-        for (let i = 0; i < stepEntities.length; ++ i) {
+        for (let i = 0; i < stepEntities.length; ++i) {
             const tileId = stepEntities[i]
             const actorId = Step.actor[tileId]
             const prevTileId = Step.prevTile[tileId]

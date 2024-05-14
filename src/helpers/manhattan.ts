@@ -11,11 +11,10 @@ import { satisfiesBounds } from './satisfiesBounds'
 const tileQuery = defineQuery([Tile])
 const actorQuery = defineQuery([Actor])
 
-
 export function manStart(
     world: IWorld,
     playerId: number,
-    possibleTilesAll: Map<number, Map<number, Path>>
+    possibleTilesAll: Map<number, Map<number, Path>>,
 ) {
     const possibleTiles = new Map<number, Path>()
     const tileEntities = tileQuery(world)
@@ -30,7 +29,7 @@ export function manStart(
     manhattan(tileEntities, actorEntities, possibleTiles, row, col - 1, playerId, dist, tileId)
     possibleTilesAll.set(
         playerId,
-        possibleTiles
+        possibleTiles,
     )
 }
 
@@ -42,7 +41,7 @@ function manhattan(
     col: number,
     playerId: number,
     dist: number,
-    parent: number
+    parent: number,
 ) {
     if (!satisfiesBounds(row, col)) return
     const tileId = tiles[(row * 30) + col]
@@ -61,17 +60,18 @@ function manhattan(
                 tileId,
                 {
                     cost: remainder,
-                    parent: parent
-                }
+                    parent: parent,
+                },
             )
         }
-    } else {
+    }
+    else {
         possibleTiles.set(
             tileId,
             {
                 cost: remainder,
-                parent: parent
-            }
+                parent: parent,
+            },
         )
     }
     manhattan(tiles, actors, possibleTiles, row - 1, col, playerId, dist - cost, tileId)

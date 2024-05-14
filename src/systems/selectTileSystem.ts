@@ -4,7 +4,7 @@ import {
     defineSystem,
     enterQuery,
     IWorld,
-    removeComponent
+    removeComponent,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 import { Actor } from '../components/actor/actor'
@@ -24,17 +24,17 @@ function moveActor(
     actorId: number,
     targetId: number,
     availableTiles: Map<number, Path>,
-    world: IWorld
+    world: IWorld,
 ) {
     let cursor = targetId
+    let parent = null
     const current = CurrentTile.tile[actorId]
-    while (true) {
-        const parent = availableTiles.get(cursor).parent
+    while (cursor !== current) {
+        parent = availableTiles.get(cursor).parent
         addComponent(world, Step, cursor)
         Step.actor[cursor] = actorId
         Step.prevTile[cursor] = parent
         Step.targetId[cursor] = targetId
-        if (parent === current) break
         cursor = parent
     }
 }
@@ -47,7 +47,7 @@ function tileDoubleClick(
     const selectedId = (selectQuery(world).length === 1) ? selectQuery(world)[0] : -1
     if (selectedId !== -1) {
         const actorEntities = actorQuery(world)
-        for (let i = 0; i < actorEntities.length; ++ i) {
+        for (let i = 0; i < actorEntities.length; ++i) {
             const actorId = actorEntities[i]
             Array.from(availableTiles.keys()).map((key) => {
                 if (availableTiles.get(key).has(tileId) && selectedId === actorId) {
@@ -63,23 +63,23 @@ function tileDoubleClick(
 export const createSelectTileSystem = (
     scene: Phaser.Scene,
     spriteById: Map<number, Phaser.GameObjects.Sprite>,
-    availableTilesAll: Map<number, Map<number, Path>>
+    availableTilesAll: Map<number, Map<number, Path>>,
 ) => {
-    return defineSystem(world => {
+    return defineSystem((world) => {
         const tileEntities = tintQueryEnter(world)
-        for (let i = 0; i < tileEntities.length; ++ i) {
+        for (let i = 0; i < tileEntities.length; ++i) {
             const id = tileEntities[i]
             const tile = spriteById.get(id)
             if (tile) {
                 let lastTime = 0
-                tile.on('pointerdown', ()=>{
+                tile.on('pointerdown', () => {
                     const clickDelay = scene.time.now - lastTime
                     lastTime = scene.time.now
-                    if(clickDelay < 350) {
+                    if (clickDelay < 350) {
                         tileDoubleClick(
                             id,
                             world,
-                            availableTilesAll
+                            availableTilesAll,
                         )
                     }
                 })

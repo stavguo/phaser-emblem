@@ -1,5 +1,5 @@
 import {
-    defineComponent
+    defineComponent,
 } from 'bitecs'
 
 // Component for tagging tiles.

@@ -1,4 +1,4 @@
 export type Path = {
-    cost: number,
+    cost: number
     parent: number
 }

@@ -1,16 +1,16 @@
 import {
     defineComponent,
-    Types
+    Types,
 } from 'bitecs'
 
 export enum TintEnum {
-    'Blue',
-    'Red',
-    'Black'
+    Blue,
+    Red,
+    Black,
 }
 
 // Component for assigning a cost to traverse tiles.
 export const Tint = defineComponent({
     isTinted: Types.ui8,
-    color: Types.ui8
+    color: Types.ui8,
 })

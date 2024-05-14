@@ -3,7 +3,7 @@ import {
     addEntity,
     createWorld,
     IWorld,
-    System
+    System,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 import { createNoise2D } from 'simplex-noise'
@@ -23,7 +23,6 @@ import { createSpriteSystem } from '../systems/spriteSystem'
 import { createTintSystem } from '../systems/tintSystem'
 import { Path } from '../types/Path'
 import { createTutorialTextSystem } from '../systems/tutorialTextSystem'
-
 
 export default class MainScene extends Phaser.Scene {
     private world?: IWorld
@@ -56,11 +55,11 @@ export default class MainScene extends Phaser.Scene {
         const gm = addEntity(this.world)
         addComponent(this.world, Phase, gm)
 
-        //Initialize enemy
-        //this.createEnemy()
+        // Initialize enemy
+        // this.createEnemy()
 
-        //Initialize player
-        //this.createPlayer()
+        // Initialize player
+        // this.createPlayer()
 
         // Initialize map
         const noise2D = createNoise2D()
@@ -80,7 +79,7 @@ export default class MainScene extends Phaser.Scene {
                 Sprite.texture[tile] = 2
 
                 // const noise = noise2D(row /10, col /10)
-                const noise = noise2D(row/15, col/15)
+                const noise = noise2D(row / 15, col / 15)
                 addComponent(this.world, Noise, tile)
                 Noise.value[tile] = noise
             }
@@ -92,9 +91,9 @@ export default class MainScene extends Phaser.Scene {
             [
                 'goodChar',
                 'badChar',
-                'terrain'
+                'terrain',
             ],
-            this.spriteById
+            this.spriteById,
         )
 
         // Initialize camera system

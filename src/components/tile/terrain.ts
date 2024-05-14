@@ -1,9 +1,9 @@
 import {
     defineComponent,
-    Types
+    Types,
 } from 'bitecs'
 
 // Component for assigning a cost to traverse tiles.
 export const Terrain = defineComponent({
-    cost: Types.ui8
+    cost: Types.ui8,
 })
