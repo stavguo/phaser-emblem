@@ -42,7 +42,7 @@ export default class MainScene extends Phaser.Scene {
     tiles: Map<string, number>
 
     constructor() {
-        super({ key: 'EcsScene' })
+        super({ key: 'MainScene' })
     }
 
     create() {
