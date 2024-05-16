@@ -55,16 +55,12 @@ export default class MainScene extends Phaser.Scene {
         const gm = addEntity(this.world)
         addComponent(this.world, Phase, gm)
 
-        // Initialize enemy
-        // this.createEnemy()
-
-        // Initialize player
-        // this.createPlayer()
-
         // Initialize map
+        const worldWidthInTiles: number = Number(this.game.config.width) / 16
+        const worldHeightInTiles: number = Number(this.game.config.height) / 16
         const noise2D = createNoise2D()
-        for (let row = 0; row < 20; ++row) {
-            for (let col = 0; col < 30; ++col) {
+        for (let row = 0; row < worldHeightInTiles; ++row) {
+            for (let col = 0; col < worldWidthInTiles; ++col) {
                 const tile = addEntity(this.world)
                 this.tiles.set(`${col},${row}`, tile)
                 addComponent(this.world, Tile, tile)
