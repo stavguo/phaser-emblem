@@ -2,23 +2,12 @@ import * as Phaser from 'phaser'
 import MainScene from './scenes/mainScene'
 import PreloadScene from './scenes/preloadScene'
 
-let default_width: number
-let default_height: number
-let center_mode: number
 // 16x16 tiles, 15 by 10
-if (window.innerWidth > window.innerHeight) {
-    default_width = 240 * 4
-    default_height = 160 * 4
-    center_mode = Phaser.Scale.CENTER_BOTH
-}
-else {
-    default_width = 160 * 4
-    default_height = 240 * 4
-    center_mode = Phaser.Scale.CENTER_HORIZONTALLY
-}
-
+const scale = 4
+const width = 240
+const height = 160
 const config = {
-    // type: Phaser.AUTO,
+    // type can't be Phaser.AUTO because tinting tiles is only possible with WebGL
     type: Phaser.WEBGL,
     backgroundColor: '#000',
     pixelArt: true,
@@ -26,9 +15,11 @@ const config = {
     scale: {
         parent: 'phaser-game',
         mode: Phaser.Scale.FIT,
-        autoCenter: center_mode,
-        width: default_width,
-        height: default_height,
+        autoCenter: (window.innerWidth > window.innerHeight)
+            ? Phaser.Scale.CENTER_BOTH
+            : Phaser.Scale.CENTER_HORIZONTALLY,
+        width: scale * ((window.innerWidth > window.innerHeight) ? width : height),
+        height: scale * ((window.innerWidth > window.innerHeight) ? height : width),
     },
     dom: {
         createContainer: true,
