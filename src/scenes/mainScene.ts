@@ -1,5 +1,7 @@
 import {
     createWorld,
+    defineQuery,
+    removeComponent,
     System,
 } from 'bitecs'
 import GameWorld from '../helpers/gameWorld'
@@ -14,6 +16,7 @@ import createTintSystem from '../systems/tintSystem'
 import createTutorialTextSystem from '../systems/tutorialTextSystem'
 import createUnits from '../helpers/createUnits'
 import createUnitSystem from '../systems/unitSystem'
+import Selected from '../components/selected'
 
 export default class MainScene extends Phaser.Scene {
     private world?: GameWorld
@@ -31,6 +34,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     create() {
+        // Initialize world, variables, and data structures
         this.world = createWorld()
         this.world.widthInTiles = 30
         this.world.heightInTiles = 20
@@ -41,12 +45,21 @@ export default class MainScene extends Phaser.Scene {
         createTiles(this.world)
         createUnits(this.world)
 
+        // Setup systems
         this.cameraSystem = createCameraSystem(this)
         this.tileSystem = createTileSystem(this, this.tiles)
         this.unitSystem = createUnitSystem(this, this.unitSprites)
         this.unitSelectionSystem = createUnitSelectionSystem(this.unitSprites)
         this.tintSystem = createTintSystem(this.tiles, this.unitSprites)
         this.tutorialTextSystem = createTutorialTextSystem(this)
+
+        // Initialize scene listeners
+        const selectedQuery = defineQuery([Selected])
+        this.input.keyboard.on('keydown-ESC', () => {
+            selectedQuery(this.world).forEach((eid) => {
+                removeComponent(this.world, Selected, eid)
+            })
+        }, this);
     }
 
     update(
