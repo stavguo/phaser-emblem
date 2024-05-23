@@ -1,45 +1,30 @@
 import {
-    addComponent,
-    addEntity,
     createWorld,
-    IWorld,
     System,
 } from 'bitecs'
+import GameWorld from '../helpers/gameWorld'
 import * as Phaser from 'phaser'
-import { createNoise2D } from 'simplex-noise'
-import { Cell } from '../components/base/cell'
-import { Sprite } from '../components/base/sprite'
-import { Phase } from '../components/state/phase'
-import { Noise } from '../components/tile/noise'
-import { Tile } from '../components/tile/tile'
-import { createAvailableTileSystem } from '../systems/availableTileSystem'
-import { createCameraSystem } from '../systems/cameraSystem'
-import { createMovementSystem } from '../systems/movementSystem'
-import { createNoiseSystem } from '../systems/noiseSystem'
-import { createSelectActorSystem } from '../systems/selectActorSystem'
-import { createSelectTileSystem } from '../systems/selectTileSystem'
-// import { createRiverSystem } from '../systems/riverSystem'
-import { createSpriteSystem } from '../systems/spriteSystem'
-import { createTintSystem } from '../systems/tintSystem'
-import { Path } from '../types/Path'
-import { createTutorialTextSystem } from '../systems/tutorialTextSystem'
+import createCameraSystem from '../systems/cameraSystem'
+import createTiles from '../helpers/createTiles'
+import createTileSystem from '../systems/tileSystem'
+import Unit from '../helpers/unit'
+import Tile from '../helpers/tile'
+import createUnitSelectionSystem from '../systems/unitSelectionSystem'
+import createTintSystem from '../systems/tintSystem'
+import createTutorialTextSystem from '../systems/tutorialTextSystem'
+import createUnits from '../helpers/createUnits'
+import createUnitSystem from '../systems/unitSystem'
 
 export default class MainScene extends Phaser.Scene {
-    private world?: IWorld
-    private spriteSystem?: System
+    private world?: GameWorld
+    private tileSystem?: System
+    private unitSystem?: System
+    private unitSelectionSystem?: System
     private cameraSystem?: System
-    private doubleClickSystem?: System
-    private availableTileSystem?: System
     private tintSystem?: System
-    private movementSystem?: System
-    private noiseSystem?: System
-    private neighborSystem?: System
-    // private riverSystem?: System
-    private selectTileSystem?: System
     private tutorialTextSystem?: System
-    spriteById: Map<number, Phaser.GameObjects.Sprite>
-    availableTiles: Map<number, Map<number, Path>>
-    tiles: Map<string, number>
+    unitSprites: Map<number, Unit>
+    tiles: Map<number, Tile>
 
     constructor() {
         super({ key: 'MainScene' })
@@ -47,70 +32,20 @@ export default class MainScene extends Phaser.Scene {
 
     create() {
         this.world = createWorld()
-        this.spriteById = new Map<number, Phaser.GameObjects.Sprite>()
-        this.availableTiles = new Map<number, Map<number, Path>>()
-        this.tiles = new Map<string, number>()
-
-        // Initialize game manager
-        const gm = addEntity(this.world)
-        addComponent(this.world, Phase, gm)
+        this.world.widthInTiles = 30
+        this.world.heightInTiles = 20
+        this.unitSprites = new Map<number, Unit>()
+        this.tiles = new Map<number, Tile>()
 
         // Initialize map
-        const worldWidthInTiles: number = Number(this.game.config.width) / 16
-        const worldHeightInTiles: number = Number(this.game.config.height) / 16
-        const noise2D = createNoise2D()
-        for (let row = 0; row < worldHeightInTiles; ++row) {
-            for (let col = 0; col < worldWidthInTiles; ++col) {
-                const tile = addEntity(this.world)
-                this.tiles.set(`${col},${row}`, tile)
-                addComponent(this.world, Tile, tile)
+        createTiles(this.world)
+        createUnits(this.world)
 
-                // Set Cell
-                addComponent(this.world, Cell, tile)
-                Cell.row[tile] = row
-                Cell.col[tile] = col
-
-                // Set sprite
-                addComponent(this.world, Sprite, tile)
-                Sprite.texture[tile] = 2
-
-                // const noise = noise2D(row /10, col /10)
-                const noise = noise2D(row / 15, col / 15)
-                addComponent(this.world, Noise, tile)
-                Noise.value[tile] = noise
-            }
-        }
-
-        // Sprite system
-        this.spriteSystem = createSpriteSystem(
-            this,
-            [
-                'goodChar',
-                'badChar',
-                'terrain',
-            ],
-            this.spriteById,
-        )
-
-        // Initialize camera system
         this.cameraSystem = createCameraSystem(this)
-
-        // Initialize available tile system
-        this.availableTileSystem = createAvailableTileSystem(this.availableTiles)
-
-        // Initialize double click detection system
-        this.doubleClickSystem = createSelectActorSystem(this, this.spriteById, this.availableTiles)
-
-        this.tintSystem = createTintSystem(this.spriteById)
-
-        this.movementSystem = createMovementSystem(this.spriteById)
-
-        this.noiseSystem = createNoiseSystem()
-
-        // this.riverSystem = createRiverSystem(this.tiles)
-
-        this.selectTileSystem = createSelectTileSystem(this, this.spriteById, this.availableTiles)
-
+        this.tileSystem = createTileSystem(this, this.tiles)
+        this.unitSystem = createUnitSystem(this, this.unitSprites)
+        this.unitSelectionSystem = createUnitSelectionSystem(this.unitSprites)
+        this.tintSystem = createTintSystem(this.tiles, this.unitSprites)
         this.tutorialTextSystem = createTutorialTextSystem(this)
     }
 
@@ -125,16 +60,10 @@ export default class MainScene extends Phaser.Scene {
         this.cameraSystem?.(this.world)
 
         // map init
-        this.noiseSystem?.(this.world)
-        this.neighborSystem?.(this.world)
-        // this.riverSystem?.(this.world)
-
-        this.spriteSystem?.(this.world)
-        this.availableTileSystem?.(this.world)
-        this.doubleClickSystem?.(this.world)
-        this.selectTileSystem?.(this.world)
-        this.tutorialTextSystem?.(this.world)
+        this.tileSystem?.(this.world)
+        this.unitSystem?.(this.world)
+        this.unitSelectionSystem?.(this.world)
         this.tintSystem?.(this.world)
-        this.movementSystem?.(this.world)
+        this.tutorialTextSystem?.(this.world)
     }
 }

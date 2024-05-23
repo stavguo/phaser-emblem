@@ -2,10 +2,10 @@ import * as Phaser from 'phaser'
 import MainScene from './scenes/mainScene'
 import PreloadScene from './scenes/preloadScene'
 
-// 16x16 tiles, 15 by 10
-const scale = 4
-const width = 240
-const height = 160
+// As a reminder tiles are 16x16 pixels, 3:2 aspect ratio
+const screenScale = 4
+const widthPixels = 240
+const heightPixels = 160
 const config = {
     // type can't be Phaser.AUTO because tinting tiles is only possible with WebGL
     type: Phaser.WEBGL,
@@ -18,8 +18,8 @@ const config = {
         autoCenter: (window.innerWidth > window.innerHeight)
             ? Phaser.Scale.CENTER_BOTH
             : Phaser.Scale.CENTER_HORIZONTALLY,
-        width: scale * ((window.innerWidth > window.innerHeight) ? width : height),
-        height: scale * ((window.innerWidth > window.innerHeight) ? height : width),
+        width: screenScale * ((window.innerWidth > window.innerHeight) ? widthPixels : heightPixels),
+        height: screenScale * ((window.innerWidth > window.innerHeight) ? heightPixels : widthPixels),
     },
     dom: {
         createContainer: true,

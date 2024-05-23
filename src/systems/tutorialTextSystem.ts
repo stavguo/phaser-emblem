@@ -5,14 +5,14 @@ import {
     enterQuery,
     exitQuery,
 } from 'bitecs'
-import { Selected } from '../components/actor/selected'
+import Selected from '../components/selected'
 
 const selectQuery = defineQuery([Selected])
 const selectEnterQuery = enterQuery(selectQuery)
 const selectExitQuery = exitQuery(selectQuery)
-const normalText = 'To move around, click and drag anywhere on the scene.\nTo view the tinted spaces a unit can move to, DOUBLE-CLICK the unit.\n'
-const selectText = 'To move a unit, DOUBLE-CLICK a tinted space.\nTo undo the selection of a unit, DOUBLE-CLICK the unit again.\n'
-export const createTutorialTextSystem = (scene: Phaser.Scene) => {
+const normalText = 'Click and drag anywhere to move around the scene.\nClick on a unit to view the spaces it can move to.\n'
+const selectText = 'Click a tinted space to move a unit there.\n'
+export default function createTutorialTextSystem(scene: Phaser.Scene) {
     const text = scene.add.text(
         scene.cameras.main.centerX,
         scene.cameras.main.centerY / 4,

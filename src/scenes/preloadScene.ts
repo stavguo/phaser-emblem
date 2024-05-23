@@ -7,8 +7,8 @@ export default class PreloadScene extends Phaser.Scene {
 
     preload() {
         this.load.spritesheet('terrain', 'assets/img/terrain.png', { frameWidth: 16, frameHeight: 16 })
-        this.load.spritesheet('goodChar', 'assets/img/goodChar.png', { frameWidth: 16, frameHeight: 16 })
-        this.load.spritesheet('badChar', 'assets/img/badChar.png', { frameWidth: 16, frameHeight: 16 })
+        this.load.spritesheet('player', 'assets/img/goodChar.png', { frameWidth: 16, frameHeight: 16 })
+        this.load.spritesheet('enemy', 'assets/img/badChar.png', { frameWidth: 16, frameHeight: 16 })
     }
 
     create() {
