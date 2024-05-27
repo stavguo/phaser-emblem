@@ -4,15 +4,17 @@ import {
     defineSystem,
     enterQuery,
     exitQuery,
+    hasComponent,
     removeComponent,
 } from 'bitecs'
 import GameWorld from '../helpers/gameWorld'
-import { Unit as UnitComponent } from '../components/unit'
+import UnitComponent from '../components/unit'
 import Unit from '../helpers/unit'
 import Tint from '../components/tint'
 import uniformCostSearch from '../helpers/uniformCostSearch'
 import { Tile as TileComponent } from '../components/tile'
 import Selected from '../components/selected'
+import Moved from '../components/moved'
 
 export default function createUnitSelectionSystem(unitSprites: Map<number, Unit>) {
     const unitQuery = defineQuery([UnitComponent])
@@ -25,7 +27,7 @@ export default function createUnitSelectionSystem(unitSprites: Map<number, Unit>
         enterUnitQuery(world).forEach((eid) => {
             const unit = unitSprites.get(eid)
             unit.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-                if (pointer.getDuration() < 150 || pointer.getDistance() === 0) {
+                if (!hasComponent(world, Moved, eid) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
                     selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
                     addComponent(world, Selected, eid)
                 }

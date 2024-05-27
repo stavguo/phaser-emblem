@@ -17,6 +17,8 @@ import createTutorialTextSystem from '../systems/tutorialTextSystem'
 import createUnits from '../helpers/createUnits'
 import createUnitSystem from '../systems/unitSystem'
 import Selected from '../components/selected'
+import createMovementSystem from '../systems/movementSystem'
+import createPhaseSystem from '../systems/phaseSystem'
 
 export default class MainScene extends Phaser.Scene {
     private world?: GameWorld
@@ -25,6 +27,8 @@ export default class MainScene extends Phaser.Scene {
     private unitSelectionSystem?: System
     private cameraSystem?: System
     private tintSystem?: System
+    private movementSystem?: System
+    private phaseSystem?: System
     private tutorialTextSystem?: System
     unitSprites: Map<number, Unit>
     tiles: Map<number, Tile>
@@ -50,8 +54,10 @@ export default class MainScene extends Phaser.Scene {
         this.tileSystem = createTileSystem(this, this.tiles)
         this.unitSystem = createUnitSystem(this, this.unitSprites)
         this.unitSelectionSystem = createUnitSelectionSystem(this.unitSprites)
-        this.tintSystem = createTintSystem(this.tiles, this.unitSprites)
-        this.tutorialTextSystem = createTutorialTextSystem(this)
+        this.tintSystem = createTintSystem(this.tiles)
+        this.movementSystem = createMovementSystem(this.tiles, this.unitSprites)
+        this.phaseSystem = createPhaseSystem(this, this.world, this.unitSprites)
+        // this.tutorialTextSystem = createTutorialTextSystem(this)
 
         // Initialize scene listeners
         const selectedQuery = defineQuery([Selected])
@@ -77,6 +83,8 @@ export default class MainScene extends Phaser.Scene {
         this.unitSystem?.(this.world)
         this.unitSelectionSystem?.(this.world)
         this.tintSystem?.(this.world)
-        this.tutorialTextSystem?.(this.world)
+        this.movementSystem?.(this.world)
+        this.phaseSystem?.(this.world)
+        // this.tutorialTextSystem?.(this.world)
     }
 }

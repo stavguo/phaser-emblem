@@ -6,26 +6,26 @@ import {
 } from 'bitecs'
 import { Tile as TileComponent, TileType } from '../components/tile'
 import Cell from '../components/cell'
-import { Unit as UnitComponent, UnitType } from '../components/unit'
+import UnitComponent from '../components/unit'
 import GameWorld from './gameWorld'
+import Player from '../components/player'
+import Enemy from '../components/enemy'
 
+// TODO: Create array of units to make by adding their specific attributes (e.g. movement, texture, etc.)
 export default function createUnits(world: GameWorld) {
     const TileQuery = defineQuery([TileComponent])
     const TileEnterQuery = enterQuery(TileQuery)
     const playerUnits = 5
     const enemyUnits = 5
-    const createUnit = (unitType: UnitType, eid: number, world: GameWorld) => {
+    const createUnit = (eid: number, world: GameWorld) => {
         const unit = addEntity(world)
         TileComponent.unit[eid] = unit
-
-        addComponent(world, UnitComponent, unit)
-        UnitComponent.type[unit] = unitType
-        UnitComponent.movement[unit] = 5
-        UnitComponent.tile[unit] = eid
 
         addComponent(world, Cell, unit)
         Cell.row[unit] = Cell.row[eid]
         Cell.col[unit] = Cell.col[eid]
+
+        return unit
     }
     const randomTiles = TileEnterQuery(world)
         .filter(eid => TileComponent.type[eid] != TileType.Sea)
@@ -35,10 +35,18 @@ export default function createUnits(world: GameWorld) {
         .slice(0, playerUnits + enemyUnits)
     for (let i = 0; i < playerUnits; i++) {
         const eid = randomTiles[i]
-        createUnit(UnitType.Player, eid, world)
+        const unit = createUnit(eid, world)
+        addComponent(world, UnitComponent, unit)
+        UnitComponent.movement[unit] = 5
+        UnitComponent.tile[unit] = eid
+        addComponent(world, Player, unit)
     }
     for (let i = playerUnits; i < playerUnits + enemyUnits; i++) {
         const eid = randomTiles[i]
-        createUnit(UnitType.Enemy, eid, world)
+        const unit = createUnit(eid, world)
+        addComponent(world, UnitComponent, unit)
+        UnitComponent.movement[unit] = 5
+        UnitComponent.tile[unit] = eid
+        addComponent(world, Enemy, unit)
     }
 }

@@ -3,14 +3,7 @@ import {
     Types,
 } from 'bitecs'
 
-export enum UnitType {
-    Player,
-    Ally,
-    Enemy,
-}
-
-export const Unit = defineComponent({
-    type: Types.ui8,
+export default defineComponent({
     movement: Types.ui8,
     tile: Types.eid,
 })
