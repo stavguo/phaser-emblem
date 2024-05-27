@@ -59,7 +59,7 @@ export default class MainScene extends Phaser.Scene {
             selectedQuery(this.world).forEach((eid) => {
                 removeComponent(this.world, Selected, eid)
             })
-        }, this);
+        }, this)
     }
 
     update(
