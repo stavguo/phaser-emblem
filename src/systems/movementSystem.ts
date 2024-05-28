@@ -4,6 +4,7 @@ import {
     defineSystem,
     enterQuery,
     exitQuery,
+    hasComponent,
     removeComponent,
 } from 'bitecs'
 import Tint from '../components/tint'
@@ -25,8 +26,8 @@ export default function createMovementSystem(tiles: Map<number, Tile>, unitSprit
             const tile = tiles.get(eid)
             tile.setInteractive()
             tile.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-                if (pointer.getDuration() < 150 || pointer.getDistance() === 0) {
-                    const startUnit = selectedQuery(world)[0]
+                const startUnit = selectedQuery(world)[0]
+                if (!hasComponent(world, Moved, startUnit) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
                     const startTile = UnitComponent.tile[startUnit]
                     const endTile = eid
 
