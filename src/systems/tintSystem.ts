@@ -18,13 +18,21 @@ export default function createTintSystem(tiles: Map<number, Tile>) {
     const tintExitQuery = exitQuery(tintQuery)
     return defineSystem((world) => {
         tintEnterQuery(world).forEach((eid) => {
-            const tile = tiles.get(eid)
-            const selected = selectedQuery(world)[0]
-            if (hasComponent(world, Player, selected)) {
-                tile.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
+            try {
+                const selectedUnits = selectedQuery(world)
+                const selectedUnit = (selectedUnits.length === 1)
+                    ? selectedUnits[0]
+                    : (() => { throw new Error('Expected one selected unit.') })()
+                const tile = tiles.get(eid)
+                if (hasComponent(world, Player, selectedUnit)) {
+                    tile.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
+                }
+                else if (hasComponent(world, Enemy, selectedUnit)) {
+                    tile.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
+                }
             }
-            else if (hasComponent(world, Enemy, selected)) {
-                tile.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
+            catch (error) {
+                console.log(error)
             }
         })
         tintExitQuery(world).forEach((eid) => {

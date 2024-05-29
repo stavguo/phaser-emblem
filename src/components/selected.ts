@@ -1,6 +1,6 @@
 import {
     defineComponent,
-    Types
+    Types,
 } from 'bitecs'
 
 export default defineComponent({

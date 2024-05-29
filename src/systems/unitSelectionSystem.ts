@@ -4,7 +4,6 @@ import {
     defineSystem,
     enterQuery,
     exitQuery,
-    hasComponent,
     removeComponent,
 } from 'bitecs'
 import GameWorld from '../helpers/gameWorld'

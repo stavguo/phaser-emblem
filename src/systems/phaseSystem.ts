@@ -75,10 +75,7 @@ export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld,
                 makePhaseMessage('Enemy Phase', '#ff0000', movedEnemyQuery)
             }
         })
-        movedEnemyEnterQuery(world).forEach((eid) => {
-            // TODO (2/2): No point tinting enemies if they move on their own with A* later.
-            //const greyColor = 0x808080
-            //unitSprites.get(eid).setTint(greyColor)
+        movedEnemyEnterQuery(world).forEach(() => {
             if (notMovedEnemyQuery(world).length === 0) {
                 makePhaseMessage('Player Phase', '#0000ff', movedPlayerQuery)
             }

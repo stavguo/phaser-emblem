@@ -1,4 +1,4 @@
-import Selected from "../components/selected"
+import Selected from '../components/selected'
 
 export default class StatWindow {
     private container!: Phaser.GameObjects.Container
@@ -9,7 +9,7 @@ export default class StatWindow {
         this.container = scene.add.container((Selected.x[eid] > (width / 2)) ? 5 : width - 5, 5)
             .setDepth(100)
             .setScrollFactor(0, 0)
-            //.setAlpha(0.7)
+            // .setAlpha(0.7)
             .disableInteractive()
         const box = scene.add.nineslice(0, 0, 'panel-beige-light', 0, 150, 100, 60, 40, 49, 49)
             .setOrigin((Selected.x[eid] > (width / 2)) ? 0 : 1, 0)
@@ -17,7 +17,7 @@ export default class StatWindow {
         this.container.add(box)
 
         // Setup Listeners
-        scene.input.on('pointerup', (p: Phaser.Input.Pointer) => {
+        scene.input.on('pointerup', () => {
             if (this.container !== null && this.container.alpha !== 1) {
                 this.container.setAlpha(1)
             }

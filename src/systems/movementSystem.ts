@@ -27,22 +27,29 @@ export default function createMovementSystem(tiles: Map<number, Tile>, unitSprit
             tile.setInteractive()
             tile.removeListener('pointerup')
             tile.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-                console.log(selectedQuery(world).length)
-                const startUnit = selectedQuery(world)[0]
-                if (!hasComponent(world, Moved, startUnit) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
-                    const startTile = UnitComponent.tile[startUnit]
-                    const endTile = eid
+                try {
+                    const selectedUnits = selectedQuery(world)
+                    const startUnit = (selectedUnits.length === 1)
+                        ? selectedUnits[0]
+                        : (() => { throw new Error('Expected one selected unit.') })()
+                    if (!hasComponent(world, Moved, startUnit) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
+                        const startTile = UnitComponent.tile[startUnit]
+                        const endTile = eid
 
-                    UnitComponent.tile[startUnit] = endTile
-                    TileComponent.unit[endTile] = startUnit
-                    TileComponent.unit[startTile] = 0
+                        UnitComponent.tile[startUnit] = endTile
+                        TileComponent.unit[endTile] = startUnit
+                        TileComponent.unit[startTile] = 0
 
-                    const row = Cell.row[endTile]
-                    const col = Cell.col[endTile]
-                    const sprite = unitSprites.get(startUnit)
-                    sprite.setPosition(col * 16 * 4, row * 16 * 4)
-                    addComponent(world, Moved, startUnit)
-                    selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
+                        const row = Cell.row[endTile]
+                        const col = Cell.col[endTile]
+                        const sprite = unitSprites.get(startUnit)
+                        sprite.setPosition(col * 16 * 4, row * 16 * 4)
+                        addComponent(world, Moved, startUnit)
+                        selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
+                    }
+                }
+                catch (error) {
+                    console.log(error)
                 }
             })
         })
