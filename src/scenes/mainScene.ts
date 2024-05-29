@@ -53,7 +53,7 @@ export default class MainScene extends Phaser.Scene {
         this.cameraSystem = createCameraSystem(this)
         this.tileSystem = createTileSystem(this, this.tiles)
         this.unitSystem = createUnitSystem(this, this.unitSprites)
-        this.unitSelectionSystem = createUnitSelectionSystem(this.unitSprites)
+        this.unitSelectionSystem = createUnitSelectionSystem(this, this.unitSprites)
         this.tintSystem = createTintSystem(this.tiles)
         this.movementSystem = createMovementSystem(this.tiles, this.unitSprites)
         this.phaseSystem = createPhaseSystem(this, this.world, this.unitSprites)
@@ -61,7 +61,7 @@ export default class MainScene extends Phaser.Scene {
 
         // Initialize scene listeners
         const selectedQuery = defineQuery([Selected])
-        this.input.keyboard.on('keydown-ESC', () => {
+        this.input.keyboard.on('keydown-C', () => {
             selectedQuery(this.world).forEach((eid) => {
                 removeComponent(this.world, Selected, eid)
             })
