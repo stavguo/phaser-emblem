@@ -1,7 +1,7 @@
-import * as Phaser from 'phaser'
 import {
     defineSystem,
 } from 'bitecs'
+import * as Phaser from 'phaser'
 
 export default function createCameraSystem(scene: Phaser.Scene) {
     const cam = scene.cameras.main

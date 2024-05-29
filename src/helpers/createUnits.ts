@@ -4,12 +4,13 @@ import {
     defineQuery,
     enterQuery,
 } from 'bitecs'
-import { Tile as TileComponent, TileType } from '../components/tile'
+
 import Cell from '../components/cell'
+import Enemy from '../components/enemy'
+import Player from '../components/player'
+import { Tile as TileComponent, TileType } from '../components/tile'
 import UnitComponent from '../components/unit'
 import GameWorld from './gameWorld'
-import Player from '../components/player'
-import Enemy from '../components/enemy'
 
 // TODO: Create array of units to make by adding their specific attributes (e.g. movement, texture, etc.)
 export default function createUnits(world: GameWorld) {

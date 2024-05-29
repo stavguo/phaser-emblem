@@ -4,21 +4,22 @@ import {
     removeComponent,
     System,
 } from 'bitecs'
-import GameWorld from '../helpers/gameWorld'
 import * as Phaser from 'phaser'
-import createCameraSystem from '../systems/cameraSystem'
-import createTiles from '../helpers/createTiles'
-import createTileSystem from '../systems/tileSystem'
-import Unit from '../helpers/unit'
-import Tile from '../helpers/tile'
-import createUnitSelectionSystem from '../systems/unitSelectionSystem'
-import createTintSystem from '../systems/tintSystem'
-import createTutorialTextSystem from '../systems/tutorialTextSystem'
-import createUnits from '../helpers/createUnits'
-import createUnitSystem from '../systems/unitSystem'
+
 import Selected from '../components/selected'
+import createTiles from '../helpers/createTiles'
+import createUnits from '../helpers/createUnits'
+import GameWorld from '../helpers/gameWorld'
+import Tile from '../helpers/tile'
+import Unit from '../helpers/unit'
+import createCameraSystem from '../systems/cameraSystem'
 import createMovementSystem from '../systems/movementSystem'
 import createPhaseSystem from '../systems/phaseSystem'
+import createTileSystem from '../systems/tileSystem'
+import createTintSystem from '../systems/tintSystem'
+import createTutorialTextSystem from '../systems/tutorialTextSystem'
+import createUnitSelectionSystem from '../systems/unitSelectionSystem'
+import createUnitSystem from '../systems/unitSystem'
 
 export default class MainScene extends Phaser.Scene {
     private world?: GameWorld

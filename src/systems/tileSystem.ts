@@ -1,10 +1,11 @@
-import * as Phaser from 'phaser'
 import {
     defineQuery,
     defineSystem,
     enterQuery,
     IWorld,
 } from 'bitecs'
+import * as Phaser from 'phaser'
+
 import Cell from '../components/cell'
 import { Tile as TileComponent } from '../components/tile'
 import Tile from '../helpers/tile'

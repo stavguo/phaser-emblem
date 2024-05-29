@@ -1,17 +1,18 @@
-import * as Phaser from 'phaser'
 import {
     defineQuery,
     defineSystem,
     enterQuery,
     hasComponent,
 } from 'bitecs'
-import Cell from '../components/cell'
-import UnitComponent from '../components/unit'
-import Unit from '../helpers/unit'
-import Player from '../components/player'
-import GameWorld from '../helpers/gameWorld'
-import Enemy from '../components/enemy'
+import * as Phaser from 'phaser'
+
 import Ally from '../components/ally'
+import Cell from '../components/cell'
+import Enemy from '../components/enemy'
+import Player from '../components/player'
+import UnitComponent from '../components/unit'
+import GameWorld from '../helpers/gameWorld'
+import Unit from '../helpers/unit'
 
 export default function createUnitSystem(scene: Phaser.Scene, unitSprites: Map<number, Unit>) {
     const unitQuery = defineQuery([UnitComponent, Cell])

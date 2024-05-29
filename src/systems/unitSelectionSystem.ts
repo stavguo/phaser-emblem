@@ -6,14 +6,15 @@ import {
     exitQuery,
     removeComponent,
 } from 'bitecs'
-import GameWorld from '../helpers/gameWorld'
-import UnitComponent from '../components/unit'
-import Unit from '../helpers/unit'
-import Tint from '../components/tint'
-import uniformCostSearch from '../helpers/uniformCostSearch'
-import { Tile as TileComponent } from '../components/tile'
+
 import Selected from '../components/selected'
+import { Tile as TileComponent } from '../components/tile'
+import Tint from '../components/tint'
+import UnitComponent from '../components/unit'
+import GameWorld from '../helpers/gameWorld'
 import StatWindow from '../helpers/statWindow'
+import uniformCostSearch from '../helpers/uniformCostSearch'
+import Unit from '../helpers/unit'
 
 export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprites: Map<number, Unit>) {
     const unitQuery = defineQuery([UnitComponent])

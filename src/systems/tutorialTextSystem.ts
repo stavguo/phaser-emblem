@@ -1,10 +1,11 @@
-import * as Phaser from 'phaser'
 import {
     defineQuery,
     defineSystem,
     enterQuery,
     exitQuery,
 } from 'bitecs'
+import * as Phaser from 'phaser'
+
 import Selected from '../components/selected'
 
 const selectQuery = defineQuery([Selected])

@@ -5,11 +5,12 @@ import {
     exitQuery,
     hasComponent,
 } from 'bitecs'
+
+import Enemy from '../components/enemy'
+import Player from '../components/player'
+import Selected from '../components/selected'
 import Tint from '../components/tint'
 import Tile from '../helpers/tile'
-import Selected from '../components/selected'
-import Player from '../components/player'
-import Enemy from '../components/enemy'
 
 export default function createTintSystem(tiles: Map<number, Tile>) {
     const selectedQuery = defineQuery([Selected])

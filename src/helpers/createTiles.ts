@@ -2,10 +2,11 @@ import {
     addComponent,
     addEntity,
 } from 'bitecs'
-import GameWorld from './gameWorld'
+import { createNoise2D } from 'simplex-noise'
+
 import Cell from '../components/cell'
 import { Tile, TileType } from '../components/tile'
-import { createNoise2D } from 'simplex-noise'
+import GameWorld from './gameWorld'
 
 export default function createTiles(world: GameWorld) {
     const noise2D = createNoise2D()

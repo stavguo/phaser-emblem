@@ -1,18 +1,19 @@
 import {
-    Not,
-    Query,
     addComponent,
     defineQuery,
     defineSystem,
     enterQuery,
+    Not,
+    Query,
     removeComponent,
 } from 'bitecs'
-import UnitComponent from '../components/unit'
-import Unit from '../helpers/unit'
+
+import Enemy from '../components/enemy'
 import Moved from '../components/moved'
 import Player from '../components/player'
-import Enemy from '../components/enemy'
+import UnitComponent from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
+import Unit from '../helpers/unit'
 
 export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld, unitSprites: Map<number, Unit>) {
     const movedPlayerQuery = defineQuery([UnitComponent, Player, Moved])
