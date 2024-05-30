@@ -1,20 +1,55 @@
+import * as Phaser from 'phaser'
+
 import Selected from '../components/selected'
+import UnitComponent from '../components/unit'
 
 export default class StatWindow {
     private container!: Phaser.GameObjects.Container
+    private width!: number
+    private height!: number
 
     constructor(scene: Phaser.Scene, eid: number) {
-        // Initialize UI
+        this.width = 200
+        this.height = 200
+
+        // Initialize UI Container
         const { width } = scene.scale
-        this.container = scene.add.container((Selected.x[eid] > (width / 2)) ? 5 : width - 5, 5)
+        this.container = scene.add.container((Selected.x[eid] > (width / 2)) ? 5 : width - 5 - this.width, 5)
             .setDepth(100)
             .setScrollFactor(0, 0)
-            // .setAlpha(0.7)
             .disableInteractive()
-        const box = scene.add.nineslice(0, 0, 'panel-beige-light', 0, 150, 100, 60, 40, 49, 49)
-            .setOrigin((Selected.x[eid] > (width / 2)) ? 0 : 1, 0)
+
+        // Setup background box
+        const box = scene.add.nineslice(0, 0, 'panel-beige-light', 0, this.width / 2, this.width / 2, 60, 40, 49, 49)
+            .setOrigin(0, 0)
             .setScale(2)
         this.container.add(box)
+
+        // Setup stats text, padding goes here
+        const line = new Phaser.Geom.Line(
+            15,
+            15,
+            15,
+            15 + this.height,
+        )
+        const elements: Phaser.GameObjects.Text[] = []
+        const hp = scene.add.text(0, 0, `HP: ${UnitComponent.hp[eid].toString()}`, { color: '#000000' })
+            .setDepth(102)
+            .setScrollFactor(0, 0)
+            .setOrigin(0, 0)
+        elements.push(hp)
+        const ap = scene.add.text(0, 0, `Attack Power: ${UnitComponent.attackPower[eid].toString()}`, { color: '#000000' })
+            .setDepth(102)
+            .setScrollFactor(0, 0)
+            .setOrigin(0, 0)
+        elements.push(ap)
+        const def = scene.add.text(0, 0, `Defense: ${UnitComponent.def[eid].toString()}`, { color: '#000000' })
+            .setDepth(102)
+            .setScrollFactor(0, 0)
+            .setOrigin(0, 0)
+        elements.push(def)
+        Phaser.Actions.PlaceOnLine(elements, line)
+        this.container.add(elements)
 
         // Setup Listeners
         scene.input.on('pointerup', () => {

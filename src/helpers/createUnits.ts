@@ -40,6 +40,9 @@ export default function createUnits(world: GameWorld) {
         addComponent(world, UnitComponent, unit)
         UnitComponent.movement[unit] = 5
         UnitComponent.tile[unit] = eid
+        UnitComponent.hp[unit] = Math.random() * (30 - 20) + 20 // https://stackoverflow.com/a/1527820
+        UnitComponent.attackPower[unit] = Math.random() * (19 - 10) + 10
+        UnitComponent.def[unit] = Math.random() * (9 - 0) + 0
         addComponent(world, Player, unit)
     }
     for (let i = playerUnits; i < playerUnits + enemyUnits; i++) {
@@ -48,6 +51,9 @@ export default function createUnits(world: GameWorld) {
         addComponent(world, UnitComponent, unit)
         UnitComponent.movement[unit] = 5
         UnitComponent.tile[unit] = eid
+        UnitComponent.hp[unit] = Math.random() * (30 - 20) + 20 // https://stackoverflow.com/a/1527820
+        UnitComponent.attackPower[unit] = Math.random() * (19 - 10) + 10
+        UnitComponent.def[unit] = Math.random() * (9 - 0) + 0
         addComponent(world, Enemy, unit)
     }
 }
