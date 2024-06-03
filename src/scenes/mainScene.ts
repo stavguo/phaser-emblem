@@ -12,6 +12,7 @@ import createUnits from '../helpers/createUnits'
 import GameWorld from '../helpers/gameWorld'
 import Tile from '../helpers/tile'
 import Unit from '../helpers/unit'
+import createActionSystem from '../systems/actionSystem'
 import createCameraSystem from '../systems/cameraSystem'
 import createMovementSystem from '../systems/movementSystem'
 import createPhaseSystem from '../systems/phaseSystem'
@@ -29,6 +30,7 @@ export default class MainScene extends Phaser.Scene {
     private cameraSystem?: System
     private tintSystem?: System
     private movementSystem?: System
+    private actionSystem?: System
     private phaseSystem?: System
     private tutorialTextSystem?: System
     unitSprites: Map<number, Unit>
@@ -57,6 +59,7 @@ export default class MainScene extends Phaser.Scene {
         this.unitSelectionSystem = createUnitSelectionSystem(this, this.unitSprites)
         this.tintSystem = createTintSystem(this.tiles)
         this.movementSystem = createMovementSystem(this.tiles, this.unitSprites)
+        this.actionSystem = createActionSystem()
         this.phaseSystem = createPhaseSystem(this, this.world, this.unitSprites)
         // this.tutorialTextSystem = createTutorialTextSystem(this)
 
@@ -85,6 +88,7 @@ export default class MainScene extends Phaser.Scene {
         this.unitSelectionSystem?.(this.world)
         this.tintSystem?.(this.world)
         this.movementSystem?.(this.world)
+        this.actionSystem?.(this.world)
         this.phaseSystem?.(this.world)
         // this.tutorialTextSystem?.(this.world)
     }

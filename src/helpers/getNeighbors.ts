@@ -1,4 +1,4 @@
-export default function getNeighborTiles(index: number, width: number, height: number): number[] {
+export default function getNeighbors(index: number, width: number, height: number): number[] {
     const neighbors: number[] = []
     const x = index % width
     const y = Math.floor(index / width)
