@@ -2,11 +2,13 @@ import * as Phaser from 'phaser'
 
 import Selected from '../components/selected'
 import UnitComponent from '../components/unit'
+import Button from './button'
 
-export default class StatWindow {
+export default class ActionMenu {
     private container!: Phaser.GameObjects.Container
     private width!: number
     private height!: number
+    public waitButton!: Phaser.GameObjects.Container
 
     constructor(scene: Phaser.Scene, eid: number) {
         this.width = 200
@@ -27,27 +29,22 @@ export default class StatWindow {
 
         // Setup stats text, padding goes here
         const line = new Phaser.Geom.Line(
-            15,
-            15,
-            15,
-            15 + this.height,
+            100,
+            40,
+            100,
+            25 + this.height,
         )
-        const elements: Phaser.GameObjects.Text[] = []
-        const hp = scene.add.text(0, 0, `HP: ${UnitComponent.hp[eid].toString()}`, { color: '#000000' })
-            .setDepth(102)
-            .setScrollFactor(0, 0)
-            .setOrigin(0, 0)
-        elements.push(hp)
-        const ap = scene.add.text(0, 0, `Attack Power: ${UnitComponent.attackPower[eid].toString()}`, { color: '#000000' })
-            .setDepth(102)
-            .setScrollFactor(0, 0)
-            .setOrigin(0, 0)
-        elements.push(ap)
-        const def = scene.add.text(0, 0, `Defense: ${UnitComponent.def[eid].toString()}`, { color: '#000000' })
-            .setDepth(102)
-            .setScrollFactor(0, 0)
-            .setOrigin(0, 0)
-        elements.push(def)
+        const elements: Phaser.GameObjects.Container[] = []
+
+        this.waitButton = new Button(scene, 160, 40, 'wait')
+        elements.push(this.waitButton)
+
+        const hp1 = new Button(scene, 160, 40, 'weapons')
+        elements.push(hp1)
+
+        const hp2 = new Button(scene, 160, 40, 'items')
+        elements.push(hp2)
+
         Phaser.Actions.PlaceOnLine(elements, line)
         this.container.add(elements)
 
@@ -70,7 +67,7 @@ export default class StatWindow {
     }
 
     destroy() {
-        if (this.container !== null) this.container.destroy()
+        this.container.destroy()
         this.container = null
     }
 }
