@@ -45,6 +45,7 @@ export default class MainScene extends Phaser.Scene {
         this.world = createWorld()
         this.world.widthInTiles = 30
         this.world.heightInTiles = 20
+        this.world.tiles = new Uint32Array(this.world.widthInTiles * this.world.heightInTiles)
         this.unitSprites = new Map<number, Unit>()
         this.tiles = new Map<number, Tile>()
 

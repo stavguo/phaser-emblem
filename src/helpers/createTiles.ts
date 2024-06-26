@@ -13,6 +13,7 @@ export default function createTiles(world: GameWorld) {
     for (let row = 0; row < world.heightInTiles; ++row) {
         for (let col = 0; col < world.widthInTiles; ++col) {
             const eid = addEntity(world)
+            world.tiles[(row * world.widthInTiles) + col] = eid
 
             addComponent(world, Cell, eid)
             Cell.row[eid] = row

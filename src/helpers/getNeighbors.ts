@@ -1,18 +1,19 @@
-export default function getNeighbors(index: number, width: number, height: number): number[] {
+import GameWorld from './gameWorld'
+
+export default function getNeighbors(world: GameWorld, row: number, col: number): number[] {
     const neighbors: number[] = []
-    const x = index % width
-    const y = Math.floor(index / width)
-    if (y > 0) {
-        neighbors.push(index - width)
+    const index = (row * world.widthInTiles) + col
+    if (row > 0) {
+        neighbors.push(world.tiles[index - world.widthInTiles])
     }
-    if (y < height) {
-        neighbors.push(index + width)
+    if (row < world.heightInTiles) {
+        neighbors.push(world.tiles[index + world.widthInTiles])
     }
-    if (x > 0) {
-        neighbors.push(index - 1)
+    if (col > 0) {
+        neighbors.push(world.tiles[index - 1])
     }
-    if (x < width) {
-        neighbors.push(index + 1)
+    if (col < world.widthInTiles) {
+        neighbors.push(world.tiles[index + 1])
     }
     return neighbors
 }

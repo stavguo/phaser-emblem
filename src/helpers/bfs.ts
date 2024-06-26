@@ -15,7 +15,7 @@ export default function bfs(eid: number, rng: number, world: GameWorld): number[
 
     while (frontier.length > 0) {
         const cur = frontier.pop()!
-        for (const n of getNeighbors(cur, world.widthInTiles, world.heightInTiles)) {
+        for (const n of getNeighbors(world, Cell.row[cur], Cell.col[cur])) {
             // If not a water tile.
             if (Tile.type[n] === TileType.Sea) continue
             if (!reached.has(n) && manhattanDist(Cell.col[eid], Cell.row[eid], Cell.col[n], Cell.row[n]) <= rng) {
