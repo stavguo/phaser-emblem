@@ -18,23 +18,23 @@ import createMovementSystem from '../systems/movementSystem'
 import createPhaseSystem from '../systems/phaseSystem'
 import createTileSystem from '../systems/tileSystem'
 import createTintSystem from '../systems/tintSystem'
-import createTutorialTextSystem from '../systems/tutorialTextSystem'
+// import createTutorialTextSystem from '../systems/tutorialTextSystem'
 import createUnitSelectionSystem from '../systems/unitSelectionSystem'
 import createUnitSystem from '../systems/unitSystem'
 
 export default class MainScene extends Phaser.Scene {
-    private world?: GameWorld
+    private world!: GameWorld
     private tileSystem?: System
     private unitSystem?: System
-    private unitSelectionSystem?: System
+    private unitSelectionSystem?: System<[], GameWorld>
     private cameraSystem?: System
     private tintSystem?: System
     private movementSystem?: System
-    private actionSystem?: System
+    private actionSystem?: System<[], GameWorld>
     private phaseSystem?: System
-    private tutorialTextSystem?: System
-    unitSprites: Map<number, Unit>
-    tiles: Map<number, Tile>
+    // private tutorialTextSystem?: System
+    unitSprites!: Map<number, Unit>
+    tiles!: Map<number, Tile>
 
     constructor() {
         super({ key: 'MainScene' })
@@ -65,7 +65,7 @@ export default class MainScene extends Phaser.Scene {
 
         // Initialize scene listeners
         const selectedQuery = defineQuery([Selected])
-        this.input.keyboard.on('keydown-C', () => {
+        this.input.keyboard!.on('keydown-C', () => {
             selectedQuery(this.world).forEach((eid) => {
                 removeComponent(this.world, Selected, eid)
             })

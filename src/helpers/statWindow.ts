@@ -4,7 +4,7 @@ import Selected from '../components/selected'
 import UnitComponent from '../components/unit'
 
 export default class StatWindow {
-    private container!: Phaser.GameObjects.Container
+    private container!: Phaser.GameObjects.Container | null
     private width!: number
     private height!: number
 

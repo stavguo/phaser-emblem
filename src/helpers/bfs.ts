@@ -14,7 +14,7 @@ export default function bfs(eid: number, rng: number, world: GameWorld): number[
     reached.add(eid)
 
     while (frontier.length > 0) {
-        const cur = frontier.pop()
+        const cur = frontier.pop()!
         for (const n of getNeighbors(cur, world.widthInTiles, world.heightInTiles)) {
             // If not a water tile.
             if (Tile.type[n] === TileType.Sea) continue

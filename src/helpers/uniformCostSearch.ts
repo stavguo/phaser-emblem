@@ -14,7 +14,7 @@ export default function uniformCostSearch(eid: number, mov: number, world: GameW
 
     while (frontier.length > 0) {
         frontier.sort((a: number, b: number) => costs.get(a) <= costs.get(b) ? 1 : -1)
-        const current = frontier.pop()
+        const current = frontier.pop()!
         for (const n of getNeighbors(current, world.widthInTiles, world.heightInTiles)) {
             // If not a water tile and not a player on the same team.
             if (Tile.type[n] === TileType.Sea) continue

@@ -24,7 +24,7 @@ export default function createMovementSystem(tiles: Map<number, Tile>, unitSprit
     const tintExitQuery = exitQuery(tintQuery)
     return defineSystem((world) => {
         tintEnterQuery(world).forEach((eid) => {
-            const tile = tiles.get(eid)
+            const tile = tiles.get(eid)!
             tile.setInteractive()
             tile.removeListener('pointerup')
             tile.on('pointerup', (pointer: Phaser.Input.Pointer) => {
@@ -43,7 +43,7 @@ export default function createMovementSystem(tiles: Map<number, Tile>, unitSprit
 
                         const row = Cell.row[endTile]
                         const col = Cell.col[endTile]
-                        const sprite = unitSprites.get(startUnit)
+                        const sprite = unitSprites.get(startUnit)!
                         sprite.setPosition(col * 16 * 4, row * 16 * 4)
                         addComponent(world, Moved, startUnit)
                         selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
@@ -55,7 +55,7 @@ export default function createMovementSystem(tiles: Map<number, Tile>, unitSprit
             })
         })
         tintExitQuery(world).forEach((eid) => {
-            const tile = tiles.get(eid)
+            const tile = tiles.get(eid)!
             tile.removeListener('pointerup')
             tile.disableInteractive()
         })

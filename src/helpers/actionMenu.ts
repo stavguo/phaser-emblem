@@ -1,11 +1,10 @@
 import * as Phaser from 'phaser'
 
 import Selected from '../components/selected'
-import UnitComponent from '../components/unit'
 import Button from './button'
 
 export default class ActionMenu {
-    private container!: Phaser.GameObjects.Container
+    private container!: Phaser.GameObjects.Container | null
     private width!: number
     private height!: number
     public waitButton!: Phaser.GameObjects.Container
@@ -67,7 +66,7 @@ export default class ActionMenu {
     }
 
     destroy() {
-        this.container.destroy()
+        if (this.container !== null) this.container.destroy()
         this.container = null
     }
 }

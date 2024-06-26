@@ -50,7 +50,7 @@ export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld,
                     onStart: function () {
                         clearQuery(world).forEach((eid) => {
                             removeComponent(world, Moved, eid)
-                            unitSprites.get(eid).clearTint()
+                            unitSprites.get(eid)!.clearTint()
                         })
                     },
                 },
@@ -71,7 +71,7 @@ export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld,
     return defineSystem((world) => {
         movedPlayerEnterQuery(world).forEach((eid) => {
             const greyColor = 0x808080
-            unitSprites.get(eid).setTint(greyColor)
+            unitSprites.get(eid)!.setTint(greyColor)
             if (notMovedPlayerQuery(world).length === 0) {
                 makePhaseMessage('Enemy Phase', '#ff0000', movedEnemyQuery)
             }

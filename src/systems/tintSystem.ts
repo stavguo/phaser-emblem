@@ -26,10 +26,10 @@ export default function createTintSystem(tiles: Map<number, Tile>) {
                     : (() => { throw new Error('Expected one selected unit.') })()
                 const tile = tiles.get(eid)
                 if (hasComponent(world, Player, selectedUnit)) {
-                    tile.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
+                    tile!.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
                 }
                 else if (hasComponent(world, Enemy, selectedUnit)) {
-                    tile.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
+                    tile!.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
                 }
             }
             catch (error) {
@@ -38,7 +38,7 @@ export default function createTintSystem(tiles: Map<number, Tile>) {
         })
         tintExitQuery(world).forEach((eid) => {
             const tile = tiles.get(eid)
-            tile.clearTint()
+            tile!.clearTint()
         })
         return world
     })

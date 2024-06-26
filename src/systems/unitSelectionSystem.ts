@@ -23,10 +23,10 @@ export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprit
     const selectedEnterQuery = enterQuery(selectedQuery)
     const selectedExitQuery = exitQuery(selectedQuery)
     const tintQuery = defineQuery([Tint])
-    let statWindow: StatWindow = null
+    let statWindow: StatWindow
     return defineSystem((world: GameWorld) => {
         enterUnitQuery(world).forEach((eid) => {
-            const unit = unitSprites.get(eid)
+            const unit = unitSprites.get(eid)!
             unit.on('pointerup', (pointer: Phaser.Input.Pointer) => {
                 if (pointer.getDuration() < 150 || pointer.getDistance() === 0) {
                     selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
