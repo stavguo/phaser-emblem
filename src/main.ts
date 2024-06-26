@@ -14,7 +14,7 @@ const config = {
     pixelArt: true,
     roundPixels: true,
     scale: {
-        parent: 'phaser-game',
+        parent: 'game-container',
         mode: Phaser.Scale.FIT,
         autoCenter: (window.innerWidth > window.innerHeight)
             ? Phaser.Scale.CENTER_BOTH
