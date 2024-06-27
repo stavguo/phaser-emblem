@@ -1,6 +1,7 @@
 import {
     createWorld,
     defineQuery,
+    pipe,
     removeComponent,
     System,
 } from 'bitecs'
@@ -21,18 +22,10 @@ import createTintSystem from '../systems/tintSystem'
 // import createTutorialTextSystem from '../systems/tutorialTextSystem'
 import createUnitSelectionSystem from '../systems/unitSelectionSystem'
 import createUnitSystem from '../systems/unitSystem'
+import cameraSetup from '../systems/cameraSystem'
 
 export default class MainScene extends Phaser.Scene {
     private world!: GameWorld
-    private tileSystem?: System
-    private unitSystem?: System
-    private unitSelectionSystem?: System<[], GameWorld>
-    private cameraSystem?: System
-    private tintSystem?: System
-    private movementSystem?: System
-    private actionSystem?: System<[], GameWorld>
-    private phaseSystem?: System
-    // private tutorialTextSystem?: System
     unitSprites!: Map<number, Unit>
     tiles!: Map<number, Tile>
 
@@ -50,19 +43,25 @@ export default class MainScene extends Phaser.Scene {
         this.tiles = new Map<number, Tile>()
 
         // Initialize map
+        cameraSetup(this)
         createTiles(this.world)
         createUnits(this.world)
 
+
         // Setup systems
-        this.cameraSystem = createCameraSystem(this)
-        this.tileSystem = createTileSystem(this, this.tiles)
-        this.unitSystem = createUnitSystem(this, this.unitSprites)
-        this.unitSelectionSystem = createUnitSelectionSystem(this, this.unitSprites)
-        this.tintSystem = createTintSystem(this.tiles)
-        this.movementSystem = createMovementSystem(this.tiles, this.unitSprites)
-        this.actionSystem = createActionSystem()
-        this.phaseSystem = createPhaseSystem(this, this.world, this.unitSprites)
-        // this.tutorialTextSystem = createTutorialTextSystem(this)
+        const pipeline = pipe(
+            createTileSystem(this, this.tiles),
+            createUnitSystem(this, this.unitSprites),
+            createUnitSelectionSystem(this, this.unitSprites),
+            createTintSystem(this.tiles),
+            createMovementSystem(this.tiles, this.unitSprites),
+            createActionSystem(),
+            createPhaseSystem(this, this.world, this.unitSprites),
+            // this.tutorialTextSystem = createTutorialTextSystem(this)
+        )
+        this.update = () => {
+            pipeline(this.world)
+        }
 
         // Initialize scene listeners
         const selectedQuery = defineQuery([Selected])
@@ -73,24 +72,22 @@ export default class MainScene extends Phaser.Scene {
         }, this)
     }
 
-    update(
-        // t: number,
-        // dt: number
-    ) {
-        if (!this.world) {
-            return
-        }
-        // camera init
-        this.cameraSystem?.(this.world)
+    // update(
+    //     // t: number,
+    //     // dt: number
+    // ) {
+    //     if (!this.world) {
+    //         return
+    //     }
 
-        // map init
-        this.tileSystem?.(this.world)
-        this.unitSystem?.(this.world)
-        this.unitSelectionSystem?.(this.world)
-        this.tintSystem?.(this.world)
-        this.movementSystem?.(this.world)
-        this.actionSystem?.(this.world)
-        this.phaseSystem?.(this.world)
-        // this.tutorialTextSystem?.(this.world)
-    }
+    //     // map init
+    //     this.tileSystem?.(this.world)
+    //     this.unitSystem?.(this.world)
+    //     this.unitSelectionSystem?.(this.world)
+    //     this.tintSystem?.(this.world)
+    //     this.movementSystem?.(this.world)
+    //     this.actionSystem?.(this.world)
+    //     this.phaseSystem?.(this.world)
+    //     // this.tutorialTextSystem?.(this.world)
+    // }
 }
