@@ -7,20 +7,20 @@ import {
     Query,
     removeComponent,
 } from 'bitecs'
+import * as Phaser from 'phaser'
 
 import Enemy from '../components/enemy'
 import Moved from '../components/moved'
 import Player from '../components/player'
-import UnitComponent from '../components/unit'
+import Unit from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
-import Unit from '../helpers/unit'
 
-export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld, unitSprites: Map<number, Unit>) {
-    const movedPlayerQuery = defineQuery([UnitComponent, Player, Moved])
-    const notMovedPlayerQuery = defineQuery([UnitComponent, Player, Not(Moved)])
+export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
+    const movedPlayerQuery = defineQuery([Unit, Player, Moved])
+    const notMovedPlayerQuery = defineQuery([Unit, Player, Not(Moved)])
     const movedPlayerEnterQuery = enterQuery(movedPlayerQuery)
-    const movedEnemyQuery = defineQuery([UnitComponent, Enemy, Moved])
-    const notMovedEnemyQuery = defineQuery([UnitComponent, Enemy, Not(Moved)])
+    const movedEnemyQuery = defineQuery([Unit, Enemy, Moved])
+    const notMovedEnemyQuery = defineQuery([Unit, Enemy, Not(Moved)])
     const movedEnemyEnterQuery = enterQuery(movedEnemyQuery)
     const makePhaseMessage = (text: string, color: string, clearQuery: Query) => {
         const textObj = scene.add.text(

@@ -3,7 +3,6 @@ import {
     defineQuery,
     pipe,
     removeComponent,
-    System,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
@@ -11,10 +10,8 @@ import Selected from '../components/selected'
 import createTiles from '../helpers/createTiles'
 import createUnits from '../helpers/createUnits'
 import GameWorld from '../helpers/gameWorld'
-import Tile from '../helpers/tile'
-import Unit from '../helpers/unit'
 import createActionSystem from '../systems/actionSystem'
-import createCameraSystem from '../systems/cameraSystem'
+import cameraSetup from '../systems/cameraSystem'
 import createMovementSystem from '../systems/movementSystem'
 import createPhaseSystem from '../systems/phaseSystem'
 import createTileSystem from '../systems/tileSystem'
@@ -22,12 +19,11 @@ import createTintSystem from '../systems/tintSystem'
 // import createTutorialTextSystem from '../systems/tutorialTextSystem'
 import createUnitSelectionSystem from '../systems/unitSelectionSystem'
 import createUnitSystem from '../systems/unitSystem'
-import cameraSetup from '../systems/cameraSystem'
 
 export default class MainScene extends Phaser.Scene {
     private world!: GameWorld
-    unitSprites!: Map<number, Unit>
-    tiles!: Map<number, Tile>
+    private unitSprites!: Map<number, Phaser.GameObjects.Sprite>
+    private tiles!: Map<number, Phaser.GameObjects.Image>
 
     constructor() {
         super({ key: 'MainScene' })
@@ -39,14 +35,13 @@ export default class MainScene extends Phaser.Scene {
         this.world.widthInTiles = 30
         this.world.heightInTiles = 20
         this.world.tiles = new Uint32Array(this.world.widthInTiles * this.world.heightInTiles)
-        this.unitSprites = new Map<number, Unit>()
-        this.tiles = new Map<number, Tile>()
+        this.unitSprites = new Map<number, Phaser.GameObjects.Sprite>()
+        this.tiles = new Map<number, Phaser.GameObjects.Image>()
 
         // Initialize map
         cameraSetup(this)
         createTiles(this.world)
         createUnits(this.world)
-
 
         // Setup systems
         const pipeline = pipe(
@@ -71,23 +66,4 @@ export default class MainScene extends Phaser.Scene {
             })
         }, this)
     }
-
-    // update(
-    //     // t: number,
-    //     // dt: number
-    // ) {
-    //     if (!this.world) {
-    //         return
-    //     }
-
-    //     // map init
-    //     this.tileSystem?.(this.world)
-    //     this.unitSystem?.(this.world)
-    //     this.unitSelectionSystem?.(this.world)
-    //     this.tintSystem?.(this.world)
-    //     this.movementSystem?.(this.world)
-    //     this.actionSystem?.(this.world)
-    //     this.phaseSystem?.(this.world)
-    //     // this.tutorialTextSystem?.(this.world)
-    // }
 }

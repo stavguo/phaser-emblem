@@ -5,14 +5,14 @@ import {
     exitQuery,
     hasComponent,
 } from 'bitecs'
+import * as Phaser from 'phaser'
 
 import Enemy from '../components/enemy'
 import Player from '../components/player'
 import Selected from '../components/selected'
 import Tint from '../components/tint'
-import Tile from '../helpers/tile'
 
-export default function createTintSystem(tiles: Map<number, Tile>) {
+export default function createTintSystem(tiles: Map<number, Phaser.GameObjects.Image>) {
     const selectedQuery = defineQuery([Selected])
     const tintQuery = defineQuery([Tint])
     const tintEnterQuery = enterQuery(tintQuery)

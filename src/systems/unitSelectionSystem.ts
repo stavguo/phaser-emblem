@@ -6,18 +6,18 @@ import {
     exitQuery,
     removeComponent,
 } from 'bitecs'
+import * as Phaser from 'phaser'
 
 import Selected from '../components/selected'
-import { Tile as TileComponent } from '../components/tile'
+import { Tile } from '../components/tile'
 import Tint from '../components/tint'
-import UnitComponent from '../components/unit'
+import Unit from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 import StatWindow from '../helpers/statWindow'
 import uniformCostSearch from '../helpers/uniformCostSearch'
-import Unit from '../helpers/unit'
 
-export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprites: Map<number, Unit>) {
-    const unitQuery = defineQuery([UnitComponent])
+export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
+    const unitQuery = defineQuery([Unit])
     const enterUnitQuery = enterQuery(unitQuery)
     const selectedQuery = defineQuery([Selected])
     const selectedEnterQuery = enterQuery(selectedQuery)
@@ -42,9 +42,9 @@ export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprit
         })
         selectedEnterQuery(world).forEach((eid) => {
             statWindow = new StatWindow(scene, eid)
-            const tiles = uniformCostSearch(UnitComponent.tile[eid], UnitComponent.movement[eid], world)
+            const tiles = uniformCostSearch(Unit.tile[eid], Unit.movement[eid], world)
             for (const tileEid of tiles) {
-                if (tileEid === UnitComponent.tile[eid] || TileComponent.unit[tileEid] !== 0) continue
+                if (tileEid === Unit.tile[eid] || Tile.unit[tileEid] !== 0) continue
                 addComponent(world, Tint, tileEid)
             }
         })

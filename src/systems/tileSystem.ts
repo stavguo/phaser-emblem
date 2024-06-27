@@ -7,15 +7,14 @@ import {
 import * as Phaser from 'phaser'
 
 import Cell from '../components/cell'
-import { Tile as TileComponent } from '../components/tile'
-import Tile from '../helpers/tile'
+import { Tile } from '../components/tile'
 
-export default function createTileSystem(scene: Phaser.Scene, tiles: Map<number, Tile>) {
-    const tileQuery = defineQuery([TileComponent, Cell])
+export default function createTileSystem(scene: Phaser.Scene, tiles: Map<number, Phaser.GameObjects.Image>) {
+    const tileQuery = defineQuery([Tile, Cell])
     const tileEnterQuery = enterQuery(tileQuery)
     return defineSystem((world: IWorld) => {
         tileEnterQuery(world).forEach((eid) => {
-            const tile = new Tile(scene, Cell.col[eid] * 64, Cell.row[eid] * 64, 'terrain', TileComponent.type[eid]).setOrigin(0).setScale(4)
+            const tile = new Phaser.GameObjects.Image(scene, Cell.col[eid] * 64, Cell.row[eid] * 64, 'terrain', Tile.type[eid]).setScale(4).setOrigin(0).setDepth(1).disableInteractive()
             scene.add.existing(tile)
             tiles.set(eid, tile)
         })

@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser'
 
 import Selected from '../components/selected'
-import UnitComponent from '../components/unit'
+import Unit from '../components/unit'
 
 export default class StatWindow {
     private container!: Phaser.GameObjects.Container | null
@@ -33,17 +33,17 @@ export default class StatWindow {
             15 + this.height,
         )
         const elements: Phaser.GameObjects.Text[] = []
-        const hp = scene.add.text(0, 0, `HP: ${UnitComponent.hp[eid].toString()}`, { color: '#000000' })
+        const hp = scene.add.text(0, 0, `HP: ${Unit.hp[eid].toString()}`, { color: '#000000' })
             .setDepth(102)
             .setScrollFactor(0, 0)
             .setOrigin(0, 0)
         elements.push(hp)
-        const ap = scene.add.text(0, 0, `Attack Power: ${UnitComponent.attackPower[eid].toString()}`, { color: '#000000' })
+        const ap = scene.add.text(0, 0, `Attack Power: ${Unit.attackPower[eid].toString()}`, { color: '#000000' })
             .setDepth(102)
             .setScrollFactor(0, 0)
             .setOrigin(0, 0)
         elements.push(ap)
-        const def = scene.add.text(0, 0, `Defense: ${UnitComponent.def[eid].toString()}`, { color: '#000000' })
+        const def = scene.add.text(0, 0, `Defense: ${Unit.def[eid].toString()}`, { color: '#000000' })
             .setDepth(102)
             .setScrollFactor(0, 0)
             .setOrigin(0, 0)
