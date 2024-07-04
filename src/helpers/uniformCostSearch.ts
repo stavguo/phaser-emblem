@@ -1,11 +1,8 @@
-import { hasComponent } from 'bitecs'
-
 import Cell from '../components/cell'
-import Enemy from '../components/enemy'
-import Player from '../components/player'
 import { Tile, TileType } from '../components/tile'
 import GameWorld from '../helpers/gameWorld'
 import getNeighbors from './getNeighbors'
+import { Unit, Team } from '../components/unit'
 
 export default function uniformCostSearch(eid: number, mov: number, world: GameWorld): number[] {
     const frontier: number[] = []
@@ -20,8 +17,10 @@ export default function uniformCostSearch(eid: number, mov: number, world: GameW
             // If not a water tile and not a player on the same team.
             if (Tile.type[n] === TileType.Sea) continue
             if (Tile.unit[n] !== 0) {
-                if ((hasComponent(world, Player, Tile.unit[n]) && hasComponent(world, Enemy, Tile.unit[eid]))
-                    || (hasComponent(world, Enemy, Tile.unit[n]) && hasComponent(world, Player, Tile.unit[eid]))) {
+                const thisUnit = Tile.unit[eid]
+                const otherUnit = Tile.unit[n]
+                if ((Unit.team[thisUnit] === Team.Player && Unit.team[otherUnit] === Team.Enemy)
+                    || (Unit.team[otherUnit] === Team.Player && Unit.team[thisUnit] === Team.Enemy)) {
                     continue
                 }
             }

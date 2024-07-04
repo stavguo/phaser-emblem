@@ -3,26 +3,33 @@ import {
     defineQuery,
     defineSystem,
     enterQuery,
+    IWorld,
     Not,
-    Query,
     removeComponent,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
-import Enemy from '../components/enemy'
 import Moved from '../components/moved'
-import Player from '../components/player'
-import Unit from '../components/unit'
+import { Team, Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 
 export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
-    const movedPlayerQuery = defineQuery([Unit, Player, Moved])
-    const notMovedPlayerQuery = defineQuery([Unit, Player, Not(Moved)])
-    const movedPlayerEnterQuery = enterQuery(movedPlayerQuery)
-    const movedEnemyQuery = defineQuery([Unit, Enemy, Moved])
-    const notMovedEnemyQuery = defineQuery([Unit, Enemy, Not(Moved)])
-    const movedEnemyEnterQuery = enterQuery(movedEnemyQuery)
-    const makePhaseMessage = (text: string, color: string, clearQuery: Query) => {
+    const movedQuery = defineQuery([Unit, Moved])
+    const notMovedQuery = defineQuery([Unit, Not(Moved)])
+    const movedEnterQuery = enterQuery(movedQuery)
+    const playerMoved = (world: IWorld) => {
+        return movedQuery(world).filter(eid => Unit.team[eid] === Team.Player)
+    }
+    const enemyMoved = (world: IWorld) => {
+        return movedQuery(world).filter(eid => Unit.team[eid] === Team.Enemy)
+    }
+    const playerNotMoved = (world: IWorld) => {
+        return notMovedQuery(world).filter(eid => Unit.team[eid] === Team.Player)
+    }
+    const enemyNotMoved = (world: IWorld) => {
+        return notMovedQuery(world).filter(eid => Unit.team[eid] === Team.Enemy)
+    }
+    const makePhaseMessage = (text: string, color: string, clearQuery: number[]) => {
         const textObj = scene.add.text(
             scene.cameras.main.centerX,
             scene.cameras.main.centerY / 4,
@@ -48,7 +55,7 @@ export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld,
                     duration: 1000,
                     ease: 'Linear',
                     onStart: function () {
-                        clearQuery(world).forEach((eid) => {
+                        clearQuery.forEach((eid) => {
                             removeComponent(world, Moved, eid)
                             unitSprites.get(eid)!.clearTint()
                         })
@@ -67,18 +74,19 @@ export default function createPhaseSystem(scene: Phaser.Scene, world: GameWorld,
         })
     }
     // Initialize map with all enemies as moved
-    notMovedEnemyQuery(world).forEach(eid => addComponent(world, Moved, eid))
+    enemyNotMoved(world).forEach(eid => addComponent(world, Moved, eid))
     return defineSystem((world) => {
-        movedPlayerEnterQuery(world).forEach((eid) => {
-            const greyColor = 0x808080
-            unitSprites.get(eid)!.setTint(greyColor)
-            if (notMovedPlayerQuery(world).length === 0) {
-                makePhaseMessage('Enemy Phase', '#ff0000', movedEnemyQuery)
-            }
-        })
-        movedEnemyEnterQuery(world).forEach(() => {
-            if (notMovedEnemyQuery(world).length === 0) {
-                makePhaseMessage('Player Phase', '#0000ff', movedPlayerQuery)
+        movedEnterQuery(world).forEach((eid) => {
+            if (Unit.team[eid] === Team.Player) {
+                const greyColor = 0x808080
+                unitSprites.get(eid)!.setTint(greyColor)
+                if (playerNotMoved(world).length === 0) {
+                    makePhaseMessage('Enemy Phase', '#ff0000', enemyMoved(world))
+                }
+            } else if (Unit.team[eid] === Team.Enemy) {
+                if (enemyNotMoved(world).length === 0) {
+                    makePhaseMessage('Player Phase', '#0000ff', playerMoved(world))
+                }
             }
         })
         return world

@@ -14,7 +14,7 @@ import Moved from '../components/moved'
 import Selected from '../components/selected'
 import { Tile } from '../components/tile'
 import Tint from '../components/tint'
-import Unit from '../components/unit'
+import { Unit } from '../components/unit'
 
 export default function createMovementSystem(tiles: Map<number, Phaser.GameObjects.Image>, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
     const selectedQuery = defineQuery([Selected])

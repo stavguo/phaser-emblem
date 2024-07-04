@@ -6,10 +6,8 @@ import {
 } from 'bitecs'
 
 import Cell from '../components/cell'
-import Enemy from '../components/enemy'
-import Player from '../components/player'
 import { Tile, TileType } from '../components/tile'
-import Unit from '../components/unit'
+import { Unit, Team } from '../components/unit'
 import GameWorld from './gameWorld'
 
 // TODO: Create array of units to make by adding their specific attributes (e.g. movement, texture, etc.)
@@ -43,7 +41,7 @@ export default function createUnits(world: GameWorld) {
         Unit.hp[unit] = Math.random() * (30 - 20) + 20 // https://stackoverflow.com/a/1527820
         Unit.attackPower[unit] = Math.random() * (19 - 10) + 10
         Unit.def[unit] = Math.random() * (9 - 0) + 0
-        addComponent(world, Player, unit)
+        Unit.team[unit] = Team.Player
     }
     for (let i = playerUnits; i < playerUnits + enemyUnits; i++) {
         const eid = randomTiles[i]
@@ -54,6 +52,6 @@ export default function createUnits(world: GameWorld) {
         Unit.hp[unit] = Math.random() * (30 - 20) + 20 // https://stackoverflow.com/a/1527820
         Unit.attackPower[unit] = Math.random() * (19 - 10) + 10
         Unit.def[unit] = Math.random() * (9 - 0) + 0
-        addComponent(world, Enemy, unit)
+        Unit.team[unit] = Team.Enemy
     }
 }

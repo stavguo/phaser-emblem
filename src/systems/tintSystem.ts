@@ -3,14 +3,12 @@ import {
     defineSystem,
     enterQuery,
     exitQuery,
-    hasComponent,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
-import Enemy from '../components/enemy'
-import Player from '../components/player'
 import Selected from '../components/selected'
 import Tint from '../components/tint'
+import { Team, Unit } from '../components/unit'
 
 export default function createTintSystem(tiles: Map<number, Phaser.GameObjects.Image>) {
     const selectedQuery = defineQuery([Selected])
@@ -25,10 +23,10 @@ export default function createTintSystem(tiles: Map<number, Phaser.GameObjects.I
                     ? selectedUnits[0]
                     : (() => { throw new Error('Expected one selected unit.') })()
                 const tile = tiles.get(eid)
-                if (hasComponent(world, Player, selectedUnit)) {
+                if (Unit.team[selectedUnit] === Team.Player) {
                     tile!.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
                 }
-                else if (hasComponent(world, Enemy, selectedUnit)) {
+                else if (Unit.team[selectedUnit] === Team.Enemy) {
                     tile!.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
                 }
             }

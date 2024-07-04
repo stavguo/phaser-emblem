@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser'
 
 import Selected from '../components/selected'
-import Unit from '../components/unit'
+import { Unit } from '../components/unit'
 
 export default class StatWindow {
     private container!: Phaser.GameObjects.Container | null
