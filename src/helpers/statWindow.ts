@@ -3,34 +3,26 @@ import * as Phaser from 'phaser'
 import Selected from '../components/selected'
 import { Unit } from '../components/unit'
 
-export default class StatWindow {
-    private container!: Phaser.GameObjects.Container | null
-    private width!: number
-    private height!: number
+export default class StatWindow extends Phaser.GameObjects.Container {
+    constructor(scene: Phaser.Scene, eid: number, windowWidth: number, windowHeight: number) {
+        super(scene, (Selected.x[eid] > (scene.scale.width / 2)) ? 5 : scene.scale.width - 5 - windowWidth, 5)
 
-    constructor(scene: Phaser.Scene, eid: number) {
-        this.width = 200
-        this.height = 200
-
-        // Initialize UI Container
-        const { width } = scene.scale
-        this.container = scene.add.container((Selected.x[eid] > (width / 2)) ? 5 : width - 5 - this.width, 5)
-            .setDepth(100)
+        this.setDepth(100)
             .setScrollFactor(0, 0)
             .disableInteractive()
 
         // Setup background box
-        const box = scene.add.nineslice(0, 0, 'panel-brown', 0, this.width / 2, this.width / 2, 60, 40, 49, 49)
+        const box = scene.add.nineslice(0, 0, 'panel-brown', 0, windowWidth / 2, windowWidth / 2, 60, 40, 49, 49)
             .setOrigin(0, 0)
             .setScale(2)
-        this.container.add(box)
+        this.add(box)
 
         // Setup stats text, padding goes here
         const line = new Phaser.Geom.Line(
             15,
             15,
             15,
-            15 + this.height,
+            15 + windowHeight,
         )
         const elements: Phaser.GameObjects.Text[] = []
         const hp = scene.add.text(0, 0, `HP: ${Unit.hp[eid].toString()}`, { color: '#000000' })
@@ -49,12 +41,12 @@ export default class StatWindow {
             .setOrigin(0, 0)
         elements.push(def)
         Phaser.Actions.PlaceOnLine(elements, line)
-        this.container.add(elements)
+        this.add(elements)
 
         // Setup Listeners
         scene.input.on('pointerup', () => {
-            if (this.container !== null && this.container.alpha !== 1) {
-                this.container.setAlpha(1)
+            if (this !== null && this.alpha !== 1) {
+                this.setAlpha(1)
             }
         })
         scene.input.on('pointermove', (p: Phaser.Input.Pointer) => {
@@ -62,15 +54,10 @@ export default class StatWindow {
                 return
             }
             else {
-                if (this.container !== null && this.container.alpha === 1) {
-                    this.container.setAlpha(0.7)
+                if (this !== null && this.alpha === 1) {
+                    this.setAlpha(0.7)
                 }
             }
         })
-    }
-
-    destroy() {
-        if (this.container !== null) this.container.destroy()
-        this.container = null
     }
 }

@@ -1,8 +1,8 @@
 import Cell from '../components/cell'
 import { Tile, TileType } from '../components/tile'
+import { Team, Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 import getNeighbors from './getNeighbors'
-import { Unit, Team } from '../components/unit'
 
 export default function uniformCostSearch(eid: number, mov: number, world: GameWorld): number[] {
     const frontier: number[] = []

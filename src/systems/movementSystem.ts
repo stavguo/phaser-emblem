@@ -9,47 +9,44 @@ import {
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
+import Actionable from '../components/actionable'
 import Cell from '../components/cell'
 import Moved from '../components/moved'
 import Selected from '../components/selected'
 import { Tile } from '../components/tile'
 import Tint from '../components/tint'
 import { Unit } from '../components/unit'
+import GameWorld from '../helpers/gameWorld'
 
 export default function createMovementSystem(tiles: Map<number, Phaser.GameObjects.Image>, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
-    const selectedQuery = defineQuery([Selected])
-    const tintQuery = defineQuery([Tint])
+    const tintQuery = defineQuery([Tint, Tile])
     const tintEnterQuery = enterQuery(tintQuery)
     const tintExitQuery = exitQuery(tintQuery)
-    return defineSystem((world) => {
+    return defineSystem((world: GameWorld) => {
         tintEnterQuery(world).forEach((eid) => {
             const tile = tiles.get(eid)!
             tile.setInteractive()
             tile.removeListener('pointerup')
             tile.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-                try {
-                    const selectedUnits = selectedQuery(world)
-                    const startUnit = (selectedUnits.length === 1)
-                        ? selectedUnits[0]
-                        : (() => { throw new Error('Expected one selected unit.') })()
-                    if (!hasComponent(world, Moved, startUnit) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
-                        const startTile = Unit.tile[startUnit]
-                        const endTile = eid
+                if (!hasComponent(world, Moved, world.selected) && (pointer.getDuration() < 150 || pointer.getDistance() === 0)) {
+                    const startTile = Unit.tile[world.selected]
+                    const endTile = eid
 
-                        Unit.tile[startUnit] = endTile
-                        Tile.unit[endTile] = startUnit
-                        Tile.unit[startTile] = 0
+                    Unit.tile[world.selected] = endTile
+                    Tile.unit[endTile] = world.selected
+                    Tile.unit[startTile] = 0
 
-                        const row = Cell.row[endTile]
-                        const col = Cell.col[endTile]
-                        const sprite = unitSprites.get(startUnit)!
-                        sprite.setPosition(col * 16 * 4, row * 16 * 4)
-                        addComponent(world, Moved, startUnit)
-                        selectedQuery(world).forEach(e => removeComponent(world, Selected, e))
-                    }
-                }
-                catch (error) {
-                    console.log(error)
+                    const row = Cell.row[endTile]
+                    const col = Cell.col[endTile]
+                    const sprite = unitSprites.get(world.selected)!
+                    sprite.setPosition(col * 16 * 4, row * 16 * 4)
+                    tintQuery(world).forEach(eid => removeComponent(world, Tint, eid))
+                    addComponent(world, Moved, world.selected)
+
+                    // TODO: Remove this and implement action menu
+                    removeComponent(world, Actionable, world.selected)
+                    addComponent(world, Tint, world.selected)
+                    removeComponent(world, Selected, world.selected)
                 }
             })
         })

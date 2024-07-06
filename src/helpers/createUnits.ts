@@ -7,7 +7,7 @@ import {
 
 import Cell from '../components/cell'
 import { Tile, TileType } from '../components/tile'
-import { Unit, Team } from '../components/unit'
+import { Team, Unit } from '../components/unit'
 import GameWorld from './gameWorld'
 
 // TODO: Create array of units to make by adding their specific attributes (e.g. movement, texture, etc.)

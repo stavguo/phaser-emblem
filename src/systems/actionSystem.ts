@@ -1,10 +1,10 @@
-import { defineQuery, defineSystem, enterQuery, hasComponent } from 'bitecs'
+import { defineQuery, defineSystem, enterQuery } from 'bitecs'
 
 import Moved from '../components/moved'
 import { Tile } from '../components/tile'
+import { Team, Unit } from '../components/unit'
 import bfs from '../helpers/bfs'
 import GameWorld from '../helpers/gameWorld'
-import { Team, Unit } from '../components/unit'
 
 export default function createActionSystem() {
     const movedQuery = defineQuery([Moved])

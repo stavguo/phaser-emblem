@@ -14,6 +14,7 @@ import createActionSystem from '../systems/actionSystem'
 import cameraSetup from '../systems/cameraSystem'
 import createMovementSystem from '../systems/movementSystem'
 import createPhaseSystem from '../systems/phaseSystem'
+import createStatWindowSystem from '../systems/statWindowSystem'
 import createTileSystem from '../systems/tileSystem'
 import createTintSystem from '../systems/tintSystem'
 // import createTutorialTextSystem from '../systems/tutorialTextSystem'
@@ -34,6 +35,7 @@ export default class MainScene extends Phaser.Scene {
         this.world = createWorld()
         this.world.widthInTiles = 30
         this.world.heightInTiles = 20
+        this.world.selected = 0
         this.world.tiles = new Uint32Array(this.world.widthInTiles * this.world.heightInTiles)
         this.unitSprites = new Map<number, Phaser.GameObjects.Sprite>()
         this.tiles = new Map<number, Phaser.GameObjects.Image>()
@@ -47,11 +49,12 @@ export default class MainScene extends Phaser.Scene {
         const pipeline = pipe(
             createTileSystem(this, this.tiles),
             createUnitSystem(this, this.unitSprites),
-            createUnitSelectionSystem(this, this.unitSprites),
-            createTintSystem(this.tiles),
+            createUnitSelectionSystem(this.unitSprites),
+            createTintSystem(this.tiles, this.unitSprites),
             createMovementSystem(this.tiles, this.unitSprites),
             createActionSystem(),
-            createPhaseSystem(this, this.world, this.unitSprites),
+            createPhaseSystem(this, this.world),
+            createStatWindowSystem(this),
             // this.tutorialTextSystem = createTutorialTextSystem(this)
         )
         this.update = () => {
