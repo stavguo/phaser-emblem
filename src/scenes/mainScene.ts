@@ -1,12 +1,9 @@
 import {
     createWorld,
-    defineQuery,
     pipe,
-    removeComponent,
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
-import Selected from '../components/selected'
 import createTiles from '../helpers/createTiles'
 import createUnits from '../helpers/createUnits'
 import GameWorld from '../helpers/gameWorld'
@@ -49,10 +46,10 @@ export default class MainScene extends Phaser.Scene {
         const pipeline = pipe(
             createTileSystem(this, this.tiles),
             createUnitSystem(this, this.unitSprites),
-            createUnitSelectionSystem(this.unitSprites),
+            createUnitSelectionSystem(this, this.unitSprites),
             createTintSystem(this.tiles, this.unitSprites),
             createMovementSystem(this.tiles, this.unitSprites),
-            createActionSystem(),
+            createActionSystem(this),
             createPhaseSystem(this, this.world),
             createStatWindowSystem(this),
             // this.tutorialTextSystem = createTutorialTextSystem(this)
@@ -60,13 +57,5 @@ export default class MainScene extends Phaser.Scene {
         this.update = () => {
             pipeline(this.world)
         }
-
-        // Initialize scene listeners
-        const selectedQuery = defineQuery([Selected])
-        this.input.keyboard!.on('keydown-C', () => {
-            selectedQuery(this.world).forEach((eid) => {
-                removeComponent(this.world, Selected, eid)
-            })
-        }, this)
     }
 }

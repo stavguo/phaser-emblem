@@ -18,7 +18,7 @@ import { Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 import uniformCostSearch from '../helpers/uniformCostSearch'
 
-export default function createUnitSelectionSystem(unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
+export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprites: Map<number, Phaser.GameObjects.Sprite>) {
     const unitQuery = defineQuery([Unit])
     const enterUnitQuery = enterQuery(unitQuery)
     const selectedQuery = defineQuery([Selected])
@@ -49,6 +49,7 @@ export default function createUnitSelectionSystem(unitSprites: Map<number, Phase
             unit.setInteractive()
             unit.on('pointerup', (p: Phaser.Input.Pointer) => setUpPointer(p, eid, world))
             tileTintQuery(world).forEach(eid => removeComponent(world, Tint, eid))
+            scene.input.keyboard!.removeListener('keydown-C')
         })
         selectedEnterQuery(world).forEach((eid) => {
             const unit = unitSprites.get(eid)!
@@ -61,6 +62,9 @@ export default function createUnitSelectionSystem(unitSprites: Map<number, Phase
                         addComponent(world, Tint, tileEid)
                 }
             }
+            scene.input.keyboard!.on('keydown-C', function() {
+                removeComponent(world, Selected, world.selected)
+            }, scene)
         })
         return world
     })

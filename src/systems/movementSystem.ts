@@ -9,10 +9,8 @@ import {
 } from 'bitecs'
 import * as Phaser from 'phaser'
 
-import Actionable from '../components/actionable'
 import Cell from '../components/cell'
 import Moved from '../components/moved'
-import Selected from '../components/selected'
 import { Tile } from '../components/tile'
 import Tint from '../components/tint'
 import { Unit } from '../components/unit'
@@ -42,11 +40,6 @@ export default function createMovementSystem(tiles: Map<number, Phaser.GameObjec
                     sprite.setPosition(col * 16 * 4, row * 16 * 4)
                     tintQuery(world).forEach(eid => removeComponent(world, Tint, eid))
                     addComponent(world, Moved, world.selected)
-
-                    // TODO: Remove this and implement action menu
-                    removeComponent(world, Actionable, world.selected)
-                    addComponent(world, Tint, world.selected)
-                    removeComponent(world, Selected, world.selected)
                 }
             })
         })
