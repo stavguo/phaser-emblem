@@ -7,7 +7,7 @@ import {
 import * as Phaser from 'phaser'
 
 import { Tile } from '../components/tile'
-import Tint from '../components/tint'
+import { Tint, Color } from '../components/tint'
 import { Team, Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 
@@ -22,12 +22,18 @@ export default function createTintSystem(tiles: Map<number, Phaser.GameObjects.I
     return defineSystem((world: GameWorld) => {
         tileTintEnterQuery(world).forEach((eid) => {
             const tile = tiles.get(eid)
-            if (Unit.team[world.selected] === Team.Player) {
+            if (Tint.color[eid] == Color.Blue) {
                 tile!.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
             }
-            else if (Unit.team[world.selected] === Team.Enemy) {
+            else if (Tint.color[eid] == Color.Red) {
                 tile!.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
             }
+            // if (Unit.team[world.selected] === Team.Player) {
+            //     tile!.setTint(0x7D99D7, 0xffffff, 0xffffff, 0xffffff)
+            // }
+            // else if (Unit.team[world.selected] === Team.Enemy) {
+            //     tile!.setTint(0xffffff, 0xffffff, 0xffffff, 0xd77d7d)
+            // }
         })
         tileTintExitQuery(world).forEach((eid) => {
             tiles.get(eid)!.clearTint()

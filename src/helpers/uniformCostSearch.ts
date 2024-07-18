@@ -2,16 +2,18 @@ import Cell from '../components/cell'
 import { Tile, TileType } from '../components/tile'
 import { Team, Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
+import bfs from './bfs'
 import getNeighbors from './getNeighbors'
 
-export default function uniformCostSearch(eid: number, mov: number, world: GameWorld): number[] {
+export default function uniformCostSearch(eid: number, mov: number, world: GameWorld) {
     const frontier: number[] = []
     frontier.push(eid)
-    const costs = new Map()
+    const costs: Map<number, number> = new Map()
     costs.set(eid, 0)
+    const attackable: Set<number> = new Set()
 
     while (frontier.length > 0) {
-        frontier.sort((a: number, b: number) => costs.get(a) <= costs.get(b) ? 1 : -1)
+        frontier.sort((a: number, b: number) => costs.get(a)! <= costs.get(b)! ? 1 : -1)
         const cur = frontier.pop()!
         for (const n of getNeighbors(world, Cell.row[cur], Cell.col[cur])) {
             // If not a water tile and not a player on the same team.
@@ -24,12 +26,22 @@ export default function uniformCostSearch(eid: number, mov: number, world: GameW
                     continue
                 }
             }
-            const newCost: number = costs.get(cur) + Tile.cost[n]
-            if (newCost <= mov && (!costs.has(n) || newCost < costs.get(n))) {
-                costs.set(n, newCost)
-                frontier.push(n)
+            const newCost: number = costs.get(cur)! + Tile.cost[n]
+            if (!costs.has(n) || newCost < costs.get(n)!) {
+                if (newCost <= mov) {
+                    costs.set(n, newCost)
+                    frontier.push(n)
+                    if (newCost == mov) {
+                        bfs(n, 2, world).forEach((eid) => attackable.add(eid))
+                    }
+                }
             }
         }
     }
-    return Array.from(costs.keys())
+    const reachable = Array.from(costs.keys())
+    return {
+        reachable: reachable,
+        attackable: (attackable as any).difference(new Set(reachable))
+    }
+    
 }

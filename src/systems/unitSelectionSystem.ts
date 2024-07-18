@@ -13,7 +13,7 @@ import Actionable from '../components/actionable'
 import Moved from '../components/moved'
 import Selected from '../components/selected'
 import { Tile } from '../components/tile'
-import Tint from '../components/tint'
+import { Tint, Color } from '../components/tint'
 import { Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 import uniformCostSearch from '../helpers/uniformCostSearch'
@@ -56,10 +56,16 @@ export default function createUnitSelectionSystem(scene: Phaser.Scene, unitSprit
             unit.removeListener('pointerup')
             unit.disableInteractive()
             if (!hasComponent(world, Moved, eid) && hasComponent(world, Actionable, eid)) {
-                const tiles = uniformCostSearch(Unit.tile[eid], Unit.movement[eid], world)
-                for (const tileEid of tiles) {
+                const { reachable, attackable} = uniformCostSearch(Unit.tile[eid], Unit.movement[eid], world)
+                for (const tileEid of reachable) {
                     if (Tile.unit[tileEid] === 0 || tileEid === Unit.tile[eid])
                         addComponent(world, Tint, tileEid)
+                        Tint.color[tileEid] = Color.Blue
+                }
+                for (const tileEid of attackable) {
+                    if (Tile.unit[tileEid] === 0 || tileEid === Unit.tile[eid])
+                        addComponent(world, Tint, tileEid)
+                        Tint.color[tileEid] = Color.Red
                 }
             }
             scene.input.keyboard!.on('keydown-C', function() {

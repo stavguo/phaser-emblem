@@ -12,7 +12,7 @@ import * as Phaser from 'phaser'
 
 import Actionable from '../components/actionable'
 import Moved from '../components/moved'
-import Tint from '../components/tint'
+import { Tint } from '../components/tint'
 import { Team, Unit } from '../components/unit'
 import GameWorld from '../helpers/gameWorld'
 
